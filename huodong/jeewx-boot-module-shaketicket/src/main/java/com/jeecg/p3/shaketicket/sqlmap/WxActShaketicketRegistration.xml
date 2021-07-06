@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeecg.p3.shaketicket.dao.WxActShaketicketRegistrationDao">
+
+	<!-- Result Map-->
+	<resultMap id="WxActShaketicketRegistration" type="com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration" >
+		<result column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="act_id" property="actId" jdbcType="VARCHAR"/>
+		<result column="openid" property="openid" jdbcType="VARCHAR"/>
+		<result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+		<result column="headimg" property="headimg" jdbcType="VARCHAR"/>
+		<result column="shake_count" property="shakeCount" jdbcType="INTEGER"/>
+		<result column="day_shake_num" property="dayShakeNum" jdbcType="INTEGER"/>
+		<result column="last_shake_date" property="lastShakeDate" jdbcType="TIMESTAMP"/>
+		<result column="award_status" property="awardStatus" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="wherecontation">
+		<trim  suffixOverrides="," >
+				 <if test="query.actId != null and query.actId != ''" >
+	  		 		/* 活动id */
+			    	AND wasr.act_id =  #{query.actId,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.openid != null and query.openid != ''" >
+	  		 		/* openID */
+			    	AND wasr.openid =  #{query.openid,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.nickname != null and query.nickname != ''" >
+	  		 		/* 昵称 */
+			    	AND wasr.nickname =  #{query.nickname,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.headimg != null and query.headimg != ''" >
+	  		 		/* 头像 */
+			    	AND wasr.headimg =  #{query.headimg,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.shakeCount != null and query.shakeCount != ''" >
+	  		 		/* 摇一摇总次数 */
+			    	AND wasr.shake_count =  #{query.shakeCount,jdbcType=INTEGER}
+				 </if>
+				 <if test="query.dayShakeNum != null and query.dayShakeNum != ''" >
+	  		 		/* 当天摇一摇次数 */
+			    	AND wasr.day_shake_num =  #{query.dayShakeNum,jdbcType=INTEGER}
+				 </if>
+				 <if test="query.lastShakeDate != null and query.lastShakeDate != ''" >
+	  		 		/* 上次摇一摇日期 */
+			    	AND wasr.last_shake_date =  #{query.lastShakeDate,jdbcType=TIMESTAMP}
+				 </if>
+				 <if test="query.awardStatus != null and query.awardStatus != ''" >
+	  		 		/* 中奖状态：'1'：已中奖，'0'：未中奖 */
+			    	AND wasr.award_status =  #{query.awardStatus,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.createTime != null and query.createTime != ''" >
+	  		 		/* 创建时间 */
+			    	AND wasr.create_time =  #{query.createTime,jdbcType=TIMESTAMP}
+				 </if>
+		</trim>
+	</sql>
+
+	<!--
+	方法名称: insert
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.insert
+	开发信息: 
+	处理信息: 保存信息
+	-->
+	<insert id="insert" parameterType="Object" >
+	  INSERT  INTO  wx_act_shaketicket_registration   /* 摇一摇注册表 */  
+					(	
+                      id                            /* 序号 */ 
+                     ,act_id                        /* 活动id */ 
+                     ,openid                        /* openID */ 
+                     ,nickname                      /* 昵称 */ 
+                     ,headimg                       /* 头像 */ 
+                     ,shake_count                   /* 摇一摇总次数 */ 
+                     ,day_shake_num                 /* 当天摇一摇次数 */ 
+                     ,last_shake_date               /* 上次摇一摇日期 */ 
+                     ,award_status                  /* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+                     ,create_time                   /* 创建时间 */ 
+					)
+			values (
+                      #{id,jdbcType=VARCHAR}                            /* 序号 */ 
+                     ,#{actId,jdbcType=VARCHAR}                         /* 活动id */ 
+                     ,#{openid,jdbcType=VARCHAR}                        /* openID */ 
+                     ,#{nickname,jdbcType=VARCHAR}                      /* 昵称 */ 
+                     ,#{headimg,jdbcType=VARCHAR}                       /* 头像 */ 
+                     ,#{shakeCount,jdbcType=INTEGER}                    /* 摇一摇总次数 */ 
+                     ,#{dayShakeNum,jdbcType=INTEGER}                   /* 当天摇一摇次数 */ 
+                     ,#{lastShakeDate,jdbcType=TIMESTAMP}                 /* 上次摇一摇日期 */ 
+                     ,#{awardStatus,jdbcType=VARCHAR}                   /* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+                     ,#{createTime,jdbcType=TIMESTAMP}                    /* 创建时间 */ 
+					)
+	</insert>
+
+	
+	<!--
+	方法名称: update
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.update
+	开发信息: 
+	处理信息: 修改信息
+	-->  
+	 <update id="update" parameterType="Object" >
+	  UPDATE   wx_act_shaketicket_registration  	/* 摇一摇注册表 */
+	  			<trim   prefix="SET" suffixOverrides="," >
+						 <if test="actId != null">
+		    		 		/* 活动id */ 
+	    		 			act_id = #{actId,jdbcType=VARCHAR},
+						 </if>
+						 <if test="openid != null">
+		    		 		/* openID */ 
+	    		 			openid = #{openid,jdbcType=VARCHAR},
+						 </if>
+						 <if test="nickname != null">
+		    		 		/* 昵称 */ 
+	    		 			nickname = #{nickname,jdbcType=VARCHAR},
+						 </if>
+						 <if test="headimg != null">
+		    		 		/* 头像 */ 
+	    		 			headimg = #{headimg,jdbcType=VARCHAR},
+						 </if>
+						 <if test="shakeCount != null">
+		    		 		/* 摇一摇总次数 */ 
+	    		 			shake_count = #{shakeCount,jdbcType=INTEGER},
+						 </if>
+						 <if test="dayShakeNum != null">
+		    		 		/* 当天摇一摇次数 */ 
+	    		 			day_shake_num = #{dayShakeNum,jdbcType=INTEGER},
+						 </if>
+						 <if test="lastShakeDate != null">
+		    		 		/* 上次摇一摇日期 */ 
+	    		 			last_shake_date = #{lastShakeDate,jdbcType=TIMESTAMP},
+						 </if>
+						 <if test="awardStatus != null">
+		    		 		/* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+	    		 			award_status = #{awardStatus,jdbcType=VARCHAR},
+						 </if>
+						 <if test="createTime != null">
+		    		 		/* 创建时间 */ 
+	    		 			create_time = #{createTime,jdbcType=TIMESTAMP},
+						 </if>
+	  	  		</trim>
+				WHERE
+	  	 		 		id = #{id}		/* 序号 */ 
+	 </update>
+	
+	<!--
+	方法名称: get
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.get
+	开发信息: 
+	处理信息: 根据主键查询记录
+	-->
+	<select id="get" parameterType="Object"  resultMap="WxActShaketicketRegistration">
+		   SELECT   
+                   wasr.id                            /* 序号 */ 
+                  ,wasr.act_id                        /* 活动id */ 
+                  ,wasr.openid                        /* openID */ 
+                  ,wasr.nickname                      /* 昵称 */ 
+                  ,wasr.headimg                       /* 头像 */ 
+                  ,wasr.shake_count                   /* 摇一摇总次数 */ 
+                  ,wasr.day_shake_num                 /* 当天摇一摇次数 */ 
+                  ,wasr.last_shake_date               /* 上次摇一摇日期 */ 
+                  ,wasr.award_status                  /* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+                  ,wasr.create_time                   /* 创建时间 */ 
+		   FROM   wx_act_shaketicket_registration      AS wasr      /* 摇一摇注册表 */ 
+		   WHERE
+				id = #{id}				/* 序号 */ 
+	</select>
+	
+	<!--
+	方法名称: delete
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.delete
+	开发信息: 
+	处理信息: 删除记录
+	-->
+	<delete id="delete" parameterType="Object">
+		DELETE 	FROM wx_act_shaketicket_registration 	/* 摇一摇注册表 */  
+		WHERE 
+			id = #{id}					/* 序号 */ 
+	</delete>
+	
+	<!--
+	方法名称: count
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.count
+	开发信息: 
+	处理信息: 列表总数
+	-->
+	<select id="count" resultType="java.lang.Integer"  parameterType="Object">
+		SELECT count(*)  FROM  wx_act_shaketicket_registration      AS wasr      /* 摇一摇注册表 */ 
+		 WHERE 1=1
+		    <include refid="wherecontation"/>
+	</select>
+	
+	<select id="countByActId" resultType="java.lang.Integer"  parameterType="java.lang.String">
+		SELECT count(*)  FROM  wx_act_shaketicket_registration      AS wasr      /* 摇一摇注册表 */ 
+		 WHERE act_id=#{actId}
+	</select>
+  	
+  	<!--
+	方法名称: queryPageList
+	调用路径: com.jeecg.p3.shaketicket.entity.WxActShaketicketRegistration.queryPageList
+	开发信息: 
+	处理信息: 列表
+	-->
+	<select id="queryPageList" parameterType="Object"  resultMap="WxActShaketicketRegistration">
+		    SELECT 
+                   wasr.id                            /* 序号 */ 
+                  ,wasr.act_id                        /* 活动id */ 
+                  ,wasr.openid                        /* openID */ 
+                  ,wasr.nickname                      /* 昵称 */ 
+                  ,wasr.headimg                       /* 头像 */ 
+                  ,wasr.shake_count                   /* 摇一摇总次数 */ 
+                  ,wasr.day_shake_num                 /* 当天摇一摇次数 */ 
+                  ,wasr.last_shake_date               /* 上次摇一摇日期 */ 
+                  ,wasr.award_status                  /* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+                  ,wasr.create_time                   /* 创建时间 */ 
+		FROM   	 wx_act_shaketicket_registration      AS wasr      /* 摇一摇注册表 */ 
+		WHERE 1=1
+		   <include refid="wherecontation"/>
+		LIMIT  #{startRow}  		/* 开始序号 */ 
+			  ,#{pageSize}		/* 每页显示条数 */ 
+	</select>
+	
+	<select id="queryByActIdAndOpenid" parameterType="Object" resultMap="WxActShaketicketRegistration">
+		SELECT 
+                   wasr.id                            /* 序号 */ 
+                  ,wasr.act_id                        /* 活动id */ 
+                  ,wasr.openid                        /* openID */ 
+                  ,wasr.nickname                      /* 昵称 */ 
+                  ,wasr.headimg                       /* 头像 */ 
+                  ,wasr.shake_count                   /* 摇一摇总次数 */ 
+                  ,wasr.day_shake_num                 /* 当天摇一摇次数 */ 
+                  ,wasr.last_shake_date               /* 上次摇一摇日期 */ 
+                  ,wasr.award_status                  /* 中奖状态：'1'：已中奖，'0'：未中奖 */ 
+                  ,wasr.create_time                   /* 创建时间 */ 
+		FROM   	 wx_act_shaketicket_registration      AS wasr      /* 摇一摇注册表 */ 
+		WHERE wasr.act_id = #{actId}
+		AND wasr.openid = #{openid}
+	</select>
+	
+</mapper>

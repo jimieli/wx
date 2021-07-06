@@ -1,0 +1,256 @@
+﻿body,ul,p,h1,h2,h3,h4,h5,dl,dd,form,input,textarea,select{ padding:0; margin:0; font-family:Microsoft YaHei,Arial, Helvetica,"\534E\6587\9ED1\4F53", sans-serif; font-size:12px; color:#ccc;}
+li { list-style:none;}
+img { border:none; vertical-align: middle;}
+a {  color:#ccc; text-decoration:none; font-style:normal}
+a:hover { text-decoration:none;}
+i,em{ font-style:normal}
+
+body{
+	min-width:320px;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding-bottom: 20px;
+	position: relative;
+	background: #f2f2f2;
+}
+
+.yyybg{
+	width: 100%;
+}
+
+.yyybg img{
+	width: 100%;
+}
+
+.yyybg h3{
+	text-align: center;
+	font-size: 1.6em;
+	color: #222222;
+	font-weight: normal;
+	margin-top: 6px;
+}
+
+.cyxx{
+	width: 100%;
+	line-height: 3.2em;
+	margin-top: 20px;
+	background: #eeeeee;
+	border-bottom: 1px solid #cccccc;
+}
+
+.cyxx span{
+	color:#d7465a;
+}
+
+.cyxx p{
+	text-indent: 1em;
+	font-size: 1.2em;
+	color: #777777;
+}
+
+.zjxx{
+	width: 100%;
+	height: 320px;
+	overflow-y: auto;
+}
+
+.zjxx ul li{
+	width: 100%;
+	height: 60px;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.zjxx ul li i{
+	display: block;
+	width: 15%;
+    padding-left: 5%;
+	margin-top: 5px;
+	float: left;
+}
+
+.zjxx ul li i img{
+	width:50px;
+	height:50px;
+}
+
+.zjxx .nameAndTime{
+	display: block;
+	height: 59px;
+	width: 40%;
+    padding-left: 10%;
+	margin-top: 2px;
+	float: left;
+	font-size: 1.2em;
+	color: #222222;
+}
+.zjxx .jp{
+	display: block;
+	height: 59px;
+	width: 25%;
+    padding-left: 5%;
+	margin-top: 2px;
+	font-size: 1.2em;
+	color: #222222;
+	float: right;
+	line-height: 50px;
+}
+.zjxx ul li .nameAndTime span{
+	font-weight: bold;
+	display: block;
+	line-height: 31px;
+}
+
+.zjxx ul li .nameAndTime time{
+    font-size: 12px;
+	display: block;
+	/*line-height: 31px;*/
+	color: #777777;
+}
+
+.zjxx ul li .jp i{
+	color: #d84e43;
+	margin-top:20px
+}
+
+.jp span{
+	color: #d84e43;
+}
+#sound{
+	display: none;
+	opacity: 0;
+}
+
+/*自定义部分*/
+.myprizes{
+	display: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	left: 50%;
+	margin-left: -50%;
+	z-index: 10000;
+}
+
+#myprizes{
+	display: none;
+	position: absolute;
+	left: 50%;
+	margin-left: -140px;
+	top: 50%;
+	margin-top: -160px;
+	background: #ffffff;
+	width: 280px;
+	height: 250px;
+	border-radius: 10px;
+}
+
+.myprizes h3{
+	text-align: center;
+	color: #d84e43;
+	font-size: 1.4em;
+	margin-top: 14px;
+	margin-bottom: 20px;
+}
+
+.myprizes .back{
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	right: 20px;
+	top: 18px;
+}
+
+.myprizes .back img{
+	width: 100%;
+}
+
+.prize{
+	color: #d84e43;
+}
+.prize input{
+    box-sizing: border-box;
+    height: 34px;
+    padding: 12px 0 12px 34px;
+    border: 0;
+    border-radius: 8px;
+    width: 100%;
+    margin: 5px auto;
+    font-family: Microsoft YaHei,Helvitica,Verdana,Tohoma,Arial,san-serif;
+    font-size: 14px;
+    border: 1px #ccc solid;
+    background-size: 20px 20px;
+    color:#222222;
+}
+.input{
+	width: 90%;
+    margin-left:5%;
+    text-align: center;
+}
+
+#username{
+	background: url(../img/user.png) no-repeat 4px center;
+	background-size: 20px 20px;
+}
+
+#tel{
+	background: url(../img/phone.png) no-repeat 4px center;
+	background-size: 20px 20px;
+}
+
+#address{
+	background: url(../img/address.png) no-repeat 4px center;
+	background-size: 20px 20px;
+}
+
+.foot{
+	height: 32px;
+	text-align:center;
+}
+
+.foot .save{
+	width: 20%;
+    background-color: #d84e43;
+    height: 30px;
+    border: 1px solid #d84e43;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    color: white;
+    margin: 0px 10%;
+    margin-top: 5px;
+}
+.foot .close{
+	width: 20%;
+    background-color: #ccc;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    color: white;
+    margin: 0px 10%;
+    margin-top: 5px;
+}
+
+.lj{
+    text-align: center;
+	width: 60px;
+	display: inline-block;
+	font-size: 15px;
+	height:40%;
+	color: #fff!important;
+	border-radius:8px;
+	margin: 15px -2px 0 0 ;
+	border: 1px solid #d84e43;
+	background-color:#d84e43;
+	vertical-align: middle;
+	line-height: 25px;
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,481 @@
+#set($version='?v=0.1.10')
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$!{scratchcards.title}</title>
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1, maximum-scale=1">
+<meta http-equiv="cache-control" content="no-cache">
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" rel="stylesheet">
+<link href="$!{basePath}/content/scratchcards/css/ggl.css" rel="stylesheet" type="text/css"/>
+<link href="$!{basePath}/content/scratchcards/css/activity-style.css" rel="stylesheet" type="text/css">
+<link href="$!{basePath}/content/scratchcards/css/style.css$!{version}" rel="stylesheet" type="text/css">
+<script src="$!{basePath}/content/scratchcards/js/jquery.js" type="text/javascript"></script>
+<script  src="$!{basePath}/content/scratchcards/js/wScratchPad.js" type="text/javascript"></script>
+<script src="$!{basePath}/content/scratchcards/js/wxcheck.js" type="text/javascript"></script>
+<style>
+ .copyright {
+		position: absolute!important;
+		bottom: auto!important;
+		height: auto!important;
+		line-height: 0.8rem!important;
+		top: -12px;
+    }
+</style>
+</head>
+<body style="background:#e84144">
+  #if($!{scratchcards.shareStatus} == '1')
+	 #if($!{ifshare} == '1')
+		#if($!{lotterytoday} == '1')
+			#set($remainNumDay = $numPerDay + 1 - $paseNum)
+		#else
+			#set($remainNumDay = $numPerDay + 1)
+		#end
+		#if($!{count} != '0')
+			#if($remainNumDay > $awardsNum)
+				#set($remainNumDay = $awardsNum)
+			#end
+		#end
+	 #end
+  #else
+	#set($ifshare = '0')
+  #end	
+	
+<input type="hidden" id="remainNumDay" name="remainNumDay" value="$!{remainNumDay}">
+<input type="hidden" id="awardsNum" name="awardsNum" value="$!{awardsNum}">
+<input type="hidden" id="count" name="count" value="$!{count}">
+<input type="hidden" id="shareStatus" name="shareStatus" value="$!{scratchcards.shareStatus}">
+<input type="hidden" id="ifshare" name="ifshare" value="$!{ifshare}">
+<input type="hidden" id="prizeStatus" name="prizeStatus" value="$!{prizeStatus}">
+<input type="hidden" id="subscribeFlage" name="subscribeFlage" value="$!{subscribeFlage}">
+	<div style="opacity: 1;display:none" class="bombScreen" id="subscript" onclick="javascript:hideQrcode()">
+       <div style="width:70%;margin: 0 auto;margin-top:30%;">
+           <p style="text-align:center;color:#fff;font-size:1.3rem;padding-top:2%">关注下面公共号才能参与活动</p>
+           <div style="width:90%;margin: 0 auto;auto;margin-top:4%">
+              <img src="$!{qrcodeUrl}" style="width:100%;"/>
+        	  <p style="text-align:center;color:#fff;font-size:1.3rem;padding-bottom:2%">长按识别二维码关注</p>
+			  <p style="text-align:center;color:#fff;font-size:1.3rem;">$!{dictTool.getSysText('focus_explain',$!{weixinDto.actId})}</p>
+          </div>
+      </div>
+    </div>
+	<div class="c_main">
+        <div id="card" class="c100">
+			<img src="$!{basePath}/content/scratchcards/img/card.png" width="100%" height="100%"/>
+            <div id="gj" style="left:30%;">
+            	<span id="gjprocess" style="color: rgb(234, 32, 32); margin-left: 7%; font-size: 12px; visibility: hidden;">您正在刮奖中，退出视为弃奖</span>
+    			<div id="wScratchPad2" style="display:inline-block;">
+    				##<img id="imgss" src="$!{basePath}/content/scratchcards/img/top.png"/>
+    			</div>
+    		</div>
+        </div>
+    </div>
+	<div class="content">
+		<form id="form1"  method="post" >
+			<div class="boxcontent boxyellow" id="result" style="display:none">
+				<div class="box">
+					<div class="title-orange" Style="color:#FB0505;"><span>恭喜你中奖了</span></div>
+					<div class="Detail">
+						<a class="ui-link" href="#" id="opendialog" style="display: none;" data-rel="dialog"></a>
+						<p>你中了：<span class="red" id="prizetypes"></span>:<span class="red" id="prizename"></span></p>
+						<p>兑奖码为：<span class="red" id="codes"></span></p>
+						<input type="hidden" name="recordId" id="recordId" />
+						<p>请填写以下面信息即可兑奖！</p>
+						<p class="red"></p>   
+						<p><input name="username" class="px" id="username" type="text" placeholder="收货人姓名" /></p>
+						<p><input name="address" class="px" id="address" type="text" placeholder="收货地址" /></p>               
+						<p><input name="tel" class="px" id="tel" type="text" placeholder="输入您的手机号码" /></p>
+						<p>
+							<input class="pxbtn" id="save-btn" name="提 交" type="button" value="提 交"/>
+							<input class="pxbtn" id="replay-btn" name="再来一次" type="button" value="再来一次"/>
+						</p>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="boxcontent boxyellow" id="replay" style="display:none">
+			<div class="box">
+				<div class="Detail">
+					<p><input class="pxbtn" id="replay-btn2" name="再来一次" type="button" value="再来一次" /></p>
+				</div>
+			</div>
+		</div>
+		<div class="int">
+			<div class="tit"><img src="$!{basePath}/content/scratchcards/img/1.png" width="100%"/></div>
+			<ul id="ul_id">
+				<p style="margin-left: -15px;font-size: 16px;">#if($!{count} != '0')共有<span style='color:red'>$!{count}</span>次抽奖机会，剩余<span style='color:red' id =recounts>$!{awardsNum}</span>次。</br>#end 今日剩余次数 <span style='color:red' id=daycounts>$!{remainNumDay}</span>次。<p style="margin-left: -15px;font-size: 16px;" id="share">#if($!{scratchcards.shareStatus} == '1' && $!{ifshare} == '0' && ($!{count} == '0' || $!{awardsNum} >= $!{remainNumDay} + 1))分享即可获得额外 <span style='color:red'>1</span>次抽奖机会！#end</p></p>
+				#if($!{list})
+					#foreach($!{item} in $!{list})
+						<li>
+							$!{item.awardsName}：$!{item.name} <!--， 数量：$!{item.amount} -->	 
+						</li>
+					#end
+				#end
+			</ul>
+		</div>
+		<div class="int">
+			<div class="tit"><img src="$!{basePath}/content/scratchcards/img/2.png" width="100%"/></div>
+			<p>$!{scratchcards.description}</p>
+		</div>
+	</div>
+    <div style="height:2.5rem"></div>
+	<div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
+		$!{huodong_bottom_copyright}
+		<nav>
+			<ul id="top_menu" class="top_menu">
+				<li><a onclick="myprize()"><img src="$!{basePath}/content/scratchcards/img/plugmenu9.png" /><label>我的奖品</label></a></li>  
+				<li class="home">
+					<a onclick="home()"style="background: url('$!{basePath}/content/scratchcards/img/home.png') no-repeat center center;opacity:0.75;"></a>
+				</li>
+				<li>
+					<a onclick="AllPrize()"><img src="$!{basePath}/content/scratchcards/img/plugmenu12.png" /><label>获奖名单</label></a>
+				</li>   
+			</ul>
+		</nav>
+	</div>
+    <input type="hidden" id="actId" value="$!{weixinDto.actId}"/>
+    <input type="hidden" id="jwid" value="$!{weixinDto.jwid}"/>
+    <input type="hidden" id="openid" value="$!{weixinDto.openid}"/>
+    <input type="hidden" id="prize" value=""/>
+    <input type="hidden" id="awardpath" value=""/>
+    <input type="hidden" name="prizetype" id="prizetype" value=""/>
+    <input type="hidden" name="code" id="code" value=""/>
+	<!-- 活动运行状态  start-->
+#if($!{act_Status}=='false')
+<div style="opacity: 1;width: 100%;height: 100%;position: fixed;z-index: 1000;top: 0px;left: 0px;background: rgba(0, 0, 0, 0.8) none repeat scroll 0% 0%;">
+    <div style="width:100%;height:100%;display: flex;align-items: center;justify-content: center;font-size: 2rem;color: #fff;">$!{act_Status_Msg}</div> 	
+</div>
+#end
+<!-- 活动运行状态  end-->
+</body>
+<script type="text/javascript">
+    var awardpath=$("#awardpath").val();
+    var picPath =null;
+	var flag=1;
+	if('$!{relationId}'){//如果获奖返回1，如果不获奖返回0
+		var prize="1";
+	}else{
+		var prize="0";	
+	}
+	$(function(){
+		function toPrizePro(){
+			var actId=$("#actId").val();
+    		var openid=$("#openid").val();
+    		var jwid=$("#jwid").val();
+    		jQuery.ajax({
+    			url:"../scratchcards/toPrizePro.do",
+    			method:"POST",
+    			dataType:"JSON",
+    			data:{
+    				actId:actId,
+    				jwid:jwid,
+    				openid:openid,
+					relationId:'$!{relationId}'
+				},
+    			async:false,
+    			success:function(data){
+    				if(data.success){
+    					if(data.obj=="noPrizes"){
+                           // prize="0";
+                           // $("#prize").val(prize);//赋值
+                            $("#form1").hide();
+    					}
+    					if(data.obj=="isPrizes"){
+                            //prize="1";
+                           	//$("#prize").val(prize);
+                            prizetype=data.attributes.awardsName;
+                            code=data.attributes.code;
+                            prizeNames=data.attributes.name;
+                            id=data.attributes.id;
+                            $("#prizetype").val(prizetype);
+                            $("#prizetypes").html(prizetype);
+                            $("#prizename").html(prizeNames);
+                            $("#codes").html(code);
+                            $("#recordId").val(id);
+    					}
+    					$("#imgss").hide();
+    				}else{
+    					if(data.obj=="1"){
+							if($!{scratchcards.shareStatus} == '1' && $!{ifshare} == '0' && ($!{count} == '0' || $!{awardsNum} >= $!{remainNumDay} + 1)){
+								alert("今日抽奖机会已用完!分享即可获得额外1次抽奖机会！");
+        					}else{
+        						alert("今日抽奖次数已用完！");
+        					}
+    					}
+        				if(data.obj=="2"){
+        					alert("总抽奖次数已用完！");
+        				}
+        				if(data.obj=="prizeStatus"){
+        					alert("您已经中过奖了，把机会留给其他人吧！");
+        				}
+    				}
+    			}
+			}); 
+		}
+		var isfirst=0 ;
+		//判断是否获奖
+        	if('$!{relationId}'){
+        		picPath  ="$!{basePath}/scratchcards/awardsImg.do?relationId=$!{relationId}";
+        	}else{
+        		picPath = "$!{basePath}/content/scratchcards/img/prize0.png";//谢谢参与
+        	}
+			if('$!{awardsNum}'){
+				if(parseInt('$!{count}')!=0 && parseInt('$!{awardsNum}')<1){
+					picPath = "$!{basePath}/content/scratchcards/img/prize0.png";//谢谢参与
+				}
+			}
+			if('$!{remainNumDay}'){
+				if(parseInt('$!{remainNumDay}')<1){
+					picPath = "$!{basePath}/content/scratchcards/img/prize0.png";//谢谢参与
+				}
+			}
+        	$("#wScratchPad2").wScratchPad({
+            	color: 'grey',//覆盖的刮刮层的颜色
+            	image: picPath, //刮奖结果图片中奖或者谢谢参与
+            	cursor: '$!{basePath}/content/scratchcards/img/coin.gif',  //刮的笔刷图片
+        		scratchMove: function(e, percent){
+					if("$!{subscribeFlage}"=="1"){
+						$("#subscript").show();
+						return;
+					}
+        			if(percent > 40){
+						flag=1;
+        				this.clear();
+        				if(isfirst==0){
+        					$("#gjprocess").css('visibility','hidden');//刮奖中隐
+        					if(prize==0){
+        						$("#replay").slideToggle(200);
+        						var vv = $("#awardsNum").val()-1;
+        						var yy=$("#remainNumDay").val()-1;
+        						$("#recounts").html(vv);
+        						$("#daycounts").html(yy);
+        					}else{
+								//$!{awardsName}
+        						$("#gjprocess").css('visibility','hidden');
+                                $("#prizetype").html(prizetype);//中奖的效果
+                                $("#result").slideToggle(500);
+                                $("#card").slideUp(500);
+                                var vv = $("#awardsNum").val()-1;
+                                var yy=$("#remainNumDay").val()-1;
+                                $("#recounts").html(vv);
+                                $("#daycounts").html(yy);
+        					}
+							isfirst=1;//这个地方如果不为1不停的跳动
+                        }else{
+							
+						}
+        				isfirst=1;//这个地方如果不为1不停的跳动
+                    }else{
+                    //update-begin--Author:sunkai  Date:20180905 for：没有抽奖机会不显示刮奖中字样--------------------   
+                    	if(($!{count} == 0 && $!{remainNumDay} != '0') || ($!{remainNumDay} != '0' && $!{awardsNum} != '0')){
+							$("#gjprocess").css('visibility','visible');//小于40隐藏掉，大于四十展示出来
+						}
+					//update-end--Author:sunkai  Date:20180905 for：没有抽奖机会不显示刮奖中字样--------------------   
+						if(flag==1){
+    						toPrizePro();
+							flag=2;
+						}
+                    }
+        		}
+        	});
+    	//加载中奖方法的地方	
+    	$("#save-btn").bind("click",function(){
+            var btn=$(this);
+            var tel=$("#tel").val();
+            var name=$("#username").val();
+            var adr=$("#address").val();
+            if(name==''){
+                alert("请输入收货人姓名");
+                return
+            }
+            if(address==''){
+                alert("请输入收货人地址");
+                return
+            }
+    		if(tel==''){
+    			alert("请输入手机号码");
+    			return
+    		}
+            var regu=/^[1][3-8]+\d{9}$/;
+            var re=new RegExp(regu);
+            if(!re.test(tel)){
+            	alert("请输入正确手机号码");
+            	return
+            }
+            var jwid=$("#jwid").val();
+            var actId=$("#actId").val();
+            var openid=$("#openid").val();
+            var codes=$("#codes").val();
+            var recordId=$("#recordId").val();
+    		jQuery.ajax({
+                url:"../scratchcards/saveScratchCardsPrize.do",
+                method:"POST",
+                dataType:"JSON",
+    			data:{
+    				mobile:tel,
+    				username:name,
+    				address:adr,
+    				recordId:recordId,
+    				codes:codes
+    				},
+    			success:function(data){
+        			if(data.success){
+                        alert("提交成功，谢谢参与！");
+                        url="../scratchcards/toIndex.do";
+        				location.href= url + "?actId=" + actId + "&jwid=" + jwid + "&openid=" +openid;
+        			}else{
+        				alert(data.msg);
+        			}
+    			}
+    		});
+		});
+    	//再来一次按钮 
+        $("#replay-btn").bind("click",function(){
+            var jwid=$("#jwid").val();
+            var actId=$("#actId").val();
+            var openid=$("#openid").val();
+            location.href="$!{basePath}/scratchcards/toIndex.do?&actId="+actId+"&openid="+openid+"&jwid="+jwid;
+        });
+        $("#replay-btn2").bind("click",function(){
+            var actId=$("#actId").val();
+            var openid=$("#openid").val();
+            var jwid=$("#jwid").val();
+            location.href="$!{basePath}/scratchcards/toIndex.do?&actId="+actId+"&openid="+openid+"&jwid="+jwid;
+        });
+	});
+	//跳转活动链接
+	function home(){
+        var jwid=$("#jwid").val();
+        var actId=$("#actId").val();
+        var openid=$("#openid").val();
+        url="../scratchcards/toIndex.do";
+        location.href= url + "?actId=" + actId + "&jwid=" + jwid + "&openid=" +openid+"&appid=$!{weixinDto.appid}";
+	}
+	//我的奖品名单连接
+    function myprize(){
+        var code=$("#code").val();
+        var jwid=$("#jwid").val();
+        var actId=$("#actId").val();
+        var openid=$("#openid").val();
+        url="$!{basePath}/scratchcards/toMyPrize.do";
+        location.href= url + "?actId=" + actId + "&jwid=" + jwid + "&openid=" +openid+"&appid=$!{weixinDto.appid}";
+    }
+    //所有获奖名单连接
+    function AllPrize(){
+        var jwid=$("#jwid").val();
+        var actId=$("#actId").val();
+        var openid=$("#openid").val();
+        url="$!{basePath}/scratchcards/toAllPrize.do";
+        location.href= url + "?actId=" + actId + "&jwid=" + jwid + "&openid=" +openid;
+    }
+    
+//update-begin--Author:sunkai  Date:20180905 for：刮刮乐没有抽奖机会仍然可以刮奖问题--------------------   
+//   $(function(){
+//      if($!{remainNumDay} == '0'){
+//      	alert("今日抽奖次数已用完！");
+//      }else if($!{count} != '0' && $!{awardsNum} == '0'){
+//      	alert("总抽奖次数已用完！");
+//      }
+//    });
+//update-end--Author:sunkai  Date:20180905 for：刮刮乐没有抽奖机会仍然可以刮奖问题--------------------
+
+	function hideQrcode(){
+		$("#subscript").hide();
+	}
+</script>
+</html>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	//微信分享功能
+	wx.config({
+		debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: '$!{appId}', // 必填，公众号的唯一标识
+        timestamp: $!{timestamp}, // 必填，生成签名的时间戳
+        nonceStr: '$!{nonceStr}', // 必填，生成签名的随机串
+        signature: '$!{signature}',// 必填，签名，见附录1【必填：通过提供接口获取】
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+	});
+	//分享
+	wx.ready(function () {
+        var newHdUrl ='$!{hdUrl}';
+        var friendCircleTitle = '$!{dictTool.getSysText('tip.shareFriendCircle',$!{weixinDto.actId})}';//标题
+        var friendTitle = '$!{dictTool.getSysText('tip.shareFriendTile',$!{weixinDto.actId})}';
+        var friendDesc = '$!{dictTool.getSysText('tip.shareFriendDesc',$!{weixinDto.actId})}';
+        var imgUrl = '$!{dictTool.getSysText('img.share',$!{weixinDto.actId})}';//图片
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+            title: friendCircleTitle, // 分享标题【必填】
+            link: newHdUrl, // 分享链接【必填】
+            imgUrl: imgUrl, // 分享图标【必填】
+			success: function () { 
+                // 用户确认分享后执行的回调函数
+                if($!{scratchcards.shareStatus} == '1'){
+                    jQuery.ajax({
+                        url:"$!{basePath}/scratchcards/addShareNum.do",
+                        type:"POST",
+                        dataType:"JSON",
+                        data:{
+    						actId:"$!{weixinDto.actId}",
+    						openid:"$!{weixinDto.openid}",
+    						type:"1",
+                        },
+                        success:function(data){
+                            if(data.success && data.obj == '1'){
+            					var daycounts = $("#daycounts").html();
+								$("#daycounts").html(parseInt(daycounts) + 1);
+								$("#remainNumDay").val(parseInt(daycounts) + 1);
+								$("#ifshare").val('1');
+								$("#share").html("");
+                            }
+                        }
+                    });
+				}
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		//分享给朋友
+		wx.onMenuShareAppMessage({
+            title: friendTitle, // 分享标题【必填】
+            desc: friendDesc, // 分享描述【必填】//内容
+            link: newHdUrl, // 分享链接【必填】
+            imgUrl: imgUrl, // 分享图标【必填】
+            type: 'link', // 分享类型,music、video或link，不填默认为link【必填】
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () { 
+                // 用户确认分享后执行的回调函数
+                alert('已分享');
+                if($!{scratchcards.shareStatus} == '1'){
+                    jQuery.ajax({
+                        url:"$!{basePath}/scratchcards/addShareNum.do",
+                        type:"POST",
+                        dataType:"JSON",
+                        data:{
+    						actId:"$!{weixinDto.actId}",
+    						openid:"$!{weixinDto.openid}",
+    						type:"0",
+                        },
+                        success:function(data){
+                            if(data.success && data.obj == '1'){
+            					var daycounts = $("#daycounts").html();
+								$("#daycounts").html(parseInt(daycounts) + 1);
+								$("#remainNumDay").val(parseInt(daycounts) + 1);
+								$("#ifshare").val('1');
+								$("#share").html("");
+                            }
+                        }
+                    });
+				}
+			},
+			cancel: function () { 
+                // 用户取消分享后执行的回调函数
+                alert('已取消');
+			}
+		});
+	});		
+$!{dictTool.getSysText('statistics',$!{weixinDto.actId})}
+</script>
+<style>
+.bombScreen {width: 100%;height:100%;position: fixed;z-index:50000;top: 0px;left: 0px;opacity: 0;background: rgba(0, 0, 0, 0.8) none repeat scroll 0% 0%;}
+body {background-color: #577831;margin:0 auto;}
+</style>

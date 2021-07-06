@@ -1,0 +1,157 @@
+#parse("content/base/back/common/macro.vm")
+<!DOCTYPE html>
+<html lang="en">
+#parse("content/base/back/common/head.vm")
+<link href="$!{basePath}/plug-in/plugin/hplus/css/style.css" type="text/css" rel="stylesheet"/>
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<body style='overflow:scroll;overflow-x:hidden'>
+	<div class="container bs-docs-container" style="width:100%;">
+		<div class="row">
+			<form role="form" class="form-inline" action="$!{basePath}/scratchcards/back/wxActScratchcardsRecord/list.do" method="post"  id="formSubmit">
+				<input type="hidden" id="actId" name="actId" value="$!{wxActScratchcardsRecord.actId}"/>
+				<input type="hidden" id="zj" name="zj" value="$!{zj}"/>
+				<div  class="col-md-10" style="width:100%">
+								<div class="panel panel-default">
+								  <div class="panel-heading" style="34px">
+									  	<button type="button" class="btn btn-default" id="formReturn" data-dismiss="modal" onclick="doUrl('$!{basePath}/scratchcards/back/wxActScratchcards/list.do')"><span class="glyphicon glyphicon-circle-arrow-left"></span> 返回</button>
+										<div style="height:1px;clear:both"></div>
+									</div>
+								  <div class="panel-body">
+								  		<div class="search">
+															 <div class="form-group col-sm-4">
+															    <label for="openid" class="control-label col-sm-2 line34">openid</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="openid" id="openid" value="$!{wxActScratchcardsRecord.openid}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-4">
+															    <label for="nickname" class="control-label col-sm-2 line34">昵称</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="nickname" id="nickname" value="$!{wxActScratchcardsRecord.nickname}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="awardsId" class="control-label col-sm-2 line34">奖项</label>
+															     <div class="col-sm-8">
+															     	<select name="awardsId" id="awardsId" value="$!{wxActScratchcardsRecord.awardsId}" class="form-control" >
+																        <option value="">请选择...</option>
+														      			#foreach($award in $awards)
+														      				<option value="$!award.id" #if("$!award.id" == "$!{wxActScratchcardsRecord.awardsId}") selected="selected" #end>$!award.awardsName</option>
+														      			#end
+													      	         </select>
+															  	</div>
+															 </div>
+															#if($!{zj} != '1')
+															 <div class="form-group col-sm-4">
+															    <label for="awardsName" class="control-label col-sm-2 line34">是否中奖</label>
+															     <div class="col-sm-8">
+															     	<select name="prizesState" id="prizesState" value="$!{wxActScratchcardsRecord.prizesState}" class="form-control" >
+																        <option value="">请选择...</option>
+														      			<option value="1" #if($!{wxActScratchcardsRecord.prizesState}=="1")selected#end>中奖</option>
+																		<option value="0" #if($!{wxActScratchcardsRecord.prizesState}=="0")selected#end>未中奖</option>
+													      	         </select>
+															  	</div>
+															 </div>
+															 #end
+											  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 搜  索</button>
+											  <div class="clearfix"></div>
+								  		</div>
+								  		<div id="legend">
+								  		#if($!{zj} != '1')
+								          <legend  class="le"><a class="btn btn-primary" href="javascript:doUrl('$!{basePath}/scratchcards/back/wxActScratchcardsRecord/exportExcel.do?actId=$!{wxActScratchcardsRecord.actId}')">导出抽奖记录</a></legend>
+								        #else
+										  <legend  class="le"><a class="btn btn-primary" href="javascript:doUrl('$!{basePath}/scratchcards/back/wxActScratchcardsRecord/exportExcel.do?actId=$!{wxActScratchcardsRecord.actId}&prizesState=$!{wxActScratchcardsRecord.prizesState}')">导出中奖记录</a></legend>
+										#end
+								        </div>
+								        <table class="table table-striped">
+									        <thead>
+													<th>活动名称</th>
+													<th>个人信息</th>
+													<th>奖品信息</th>
+													#if($!{zj} != '1')
+													<th>是否中奖</th>
+													#end
+													<th>领奖信息</th>
+													<th>抽奖时间</th>
+													<th>操作</th>
+									        </thead>
+									        <tobody>
+									    	  #if($!{pageInfos})
+								                #foreach($!{info} in $!{pageInfos})
+									            	<tr>			
+														<td>$!{info.title}</td>
+														<td>
+															<div>
+																 <div style="width: 40px;height: 40px;float:left;"><img style="width: 40px;height: 40px;border-radius: 50%;" src="$!{info.headImg}"></div>
+																 <div style="height: 40px;line-height: 22px;">&nbsp;&nbsp;&nbsp;$!{info.nickname}</br>&nbsp;&nbsp;&nbsp;$!{info.openid}</div>
+														    </div>
+														</td>
+														<td>
+															#if($!{info.prizesState}=="1")
+																$!{info.awardsName}&nbsp;&nbsp;&nbsp;$!{info.prizesName}</br>中奖码：$!{info.code}
+															#end	
+														</td>
+														#if($!{zj} != '1')
+														<td>#if($!{info.prizesState}=="0")未中奖 #else 中奖#end</td>
+														#end	
+														<td>$!{info.realname}&nbsp;&nbsp;&nbsp;$!{info.phone}</br>$!{info.address}</td>
+														<td>$!dateTool.format("yyyy-MM-dd HH:mm:ss",$!{info.createTime})</td>
+														<td>
+															#if($!{info.prizesState} == '1')
+																#if($!{info.recieveStatus} != '1')
+																	<a class="btn btn-xs btn-success" href="javascript:hexiao('$!{info.id}');" style="background-Color:#CD0009;border:none"><i class="fa fa-ticket"></i> 核销</a>
+																#else
+																	<a class="btn btn-danger btn-xs" href="#"><i class="fa fa-user"></i> 已核销</a>
+																#end
+															#end
+														</td>
+									           		</tr>
+									             #end
+									    	 #end
+									         </tobody>
+									    </table>
+										<div class="text-right">
+											<!--公用翻页代码-->
+							                #set($attr='formSubmit')
+							            	#showPageList($pageInfos $attr)
+							                <!--END公用翻页代码-->
+										</div>
+								  </div>	
+								</div>
+				</div>  
+				</form>
+		</div>
+	</div>
+</body>
+<script>
+//author：sunkai--date:2018-10-15--for:核销功能--------------------------------------
+function hexiao(id){
+	layer.confirm('确认核销该奖品吗？', {
+          btn: ['确定','取消'] //按钮
+    }, function(){
+      	jQuery.ajax({
+            url:"$!{basePath}/scratchcards/back/wxActScratchcardsRecord/toRecieve.do",
+            type:"POST",
+            dataType:"JSON",
+            data:{
+                id:id
+            },
+            success:function(data){
+                if(data.success){
+					layer.confirm('核销成功', {
+         			    btn: ['确定'] //按钮
+                    }, function(){
+						window.location.reload();
+                    });
+                }else{
+                	layer.alert("核销失败");
+                }
+            }
+       });
+    }, function(){
+		layer.close();
+    });
+}
+//author：sunkai--date:2018-10-15--for:核销功能--------------------------------------
+</script>
+</html>

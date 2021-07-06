@@ -1,0 +1,462 @@
+#set($version='?v=0.0.1')
+<!DOCTYPE html>
+<html lang="en">
+#parse("content/base/back/common/head.vm")
+<link href="$!{basePath}/plug-in/plugin/hplus/css/style.css" type="text/css" rel="stylesheet"/>
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<script src="$!{basePath}/content/shaketicket/back/js/js_util.js?v-0.0.0.3" type="text/javascript"></script>
+<body style='overflow:scroll;overflow-x:hidden'>
+	<div class="container bs-docs-container" style="width:100%;">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading" style="34px">
+					<button type="button" class="btn btn-primary" id="formSubmit1" onclick="submitForm()"><span class="glyphicon glyphicon-ok"></span> 保存</button>
+					<button type="button" class="btn btn-default" id="formReturn" data-dismiss="modal" onclick="doUrl('$!{basePath}/shaketicket/back/wxActShaketicketHome/list.do')"><span class="glyphicon glyphicon-circle-arrow-left"></span> 返回</button>
+					<div style="height:1px;clear:both"></div>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal" role="form" id="dailogForm" action="$!{basePath}/shaketicket/back/wxActShaketicketHome/doAdd.do" method="POST">
+						<input type="hidden" id="btn_sub" class="btn_sub" />
+						<input type="hidden" id="template" name="template"  value="newshake" class="btn_sub" />
+						<div class="form-group mno">
+    						<div class="col-sm-4">
+    							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left">活动名称</label>
+    							<div class="col-sm-8">
+    								 <input type="text" value="$!{wxActShaketicketHome.actName}" name="actName" id="actName" class="form-control" datatype="*"/>
+    							</div>
+    						</div>
+							<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">开始时间</label>
+    							<div class="col-sm-8">
+                                  <input type="text" value="$!dateTool.format("yyyy-MM-dd HH:mm:ss",$!{wxActShaketicketHome.beginTime})" name="beginTime" id="beginTime" class="form-control" datatype="*" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" style="background: url('$!{basePath}/plug-in/images/datetime.png') no-repeat scroll right center transparent;"/>
+    							</div>
+							</div>
+    						<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">结束时间</label>
+    							<div class="col-sm-8">
+                                   <input type="text" value="$!dateTool.format("yyyy-MM-dd HH:mm:ss",$!{wxActShaketicketHome.endTime})" name="endTime" id="endTime" class="form-control" datatype="*" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" style="background: url('$!{basePath}/plug-in/images/datetime.png') no-repeat scroll right center transparent;"/>
+    							</div>
+							</div>
+						</div>
+						<div class="form-group mno">
+							<div class="col-sm-4">
+    							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">每日抽奖次数</label>
+    							<div class="col-sm-8">
+    								<input type="text" value="$!{wxActShaketicketHome.numPerDay}" name="numPerDay" id="numPerDay" class="form-control" datatype="n" errorMsg="只能输入整数值"/>
+    							</div>
+    						</div>
+							<div class="col-sm-4">
+    							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">抽奖总次数(无限制填0)</label>
+    							<div class="col-sm-8">
+                                   <input type="text" value="$!{wxActShaketicketHome.count}" name="count" id="count" class="form-control" datatype="n" errorMsg="只能输入整数值"/>
+    							</div>
+    						</div>
+							<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">是否关注可参加</label>
+    							<div class="col-sm-8">
+                                    <select name="foucsUserCanJoin" datatype="*" id="foucsUserCanJoin" value="$!{wxActShaketicketHome.foucsUserCanJoin}"  class="form-control" > 
+    							      	<option value="0" #if($!wxActShaketicketHome.foucsUserCanJoin=='0') selected #end>未关注可参加</option>
+    									<option value="1" #if($!wxActShaketicketHome.foucsUserCanJoin=='1') selected #end>未关注不可参加</option>
+    							  </select>
+    							</div>
+							</div>
+							#*<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">兑奖截止时间</label>
+    							<div class="col-sm-8">
+    								<input name="deadlinetime" id="deadlinetime" value="$!{wxActShaketicketHome.deadlinetime}"  class="form-control"  datatype="*" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" style="background: url('$!{basePath}/plug-in/images/datetime.png') no-repeat scroll right center white;"/>
+    							</div>
+							</div>*#
+						</div>
+						<div class="form-group mno">
+							<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">是否中奖可参与</label>
+    							<div class="col-sm-8">
+    								<select name="winCanJoin" id="winCanJoin" value="$!{wxActShaketicketHome.winCanJoin}"  class="form-control" datatype="*"> 
+    							      	<option value="0" #if($!wxActShaketicketHome.winCanJoin=='0') selected #end>中奖可继续参与 </option>
+    									<option value="1" #if($!wxActShaketicketHome.winCanJoin=='1') selected #end>中奖不可继续参与</option>
+    							  </select>
+    							</div>
+							</div>
+    						<div class="col-sm-4">
+    						    <label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">分享得额外抽奖机会</label>
+    						    <div class="col-sm-8">
+    						      <select value="$!{wxActShaketicketHome.extraLuckyDraw}" datatype="*" name="extraLuckyDraw" id="extraLuckyDraw"  class="form-control" > 
+    					      		<option value="0" >有</option>
+    					      		<option value="1" >没有</option>
+    					      	  </select>
+    						    </div>
+    					    </div>
+							#*<div class="col-sm-4">
+								<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">是否设置广告图</label>
+    							<div class="col-sm-8">
+                                    <select name="isSetAdv" datatype="*" id="isSetAdv" value="$!{wxActShaketicketHome.isSetAdv}"  class="form-control" onchange="setAdv()"> 
+    							      	<option value="1">是</option>
+    									<option value="0">否</option>
+    							  </select>
+    							</div>
+							</div>*#
+						</div>
+						#*<div class="form-group mno">
+							<div class="col-sm-4">
+							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">背景图</label>
+							    <div class="col-sm-8">
+								    <input type="hidden" id="bgImg" value="" name="bgImg"> 
+									<div id="uploadBgImg" style="width:200px"><span class="glyphicon glyphicon-picture"></span> 选择图片</div>  
+                    			    <div id="pic_bg_div" style="width:270px; height:240px">  
+                    			       <img src="$!{basePath}/content/luckyroulette/templete/default/img/default-plate.png" width="240" height="240" id="pic_bg">  
+                    			    </div>  
+							    </div>
+							</div>
+							<div class="col-sm-4" id="adv_img">
+							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">广告图</label>
+							    <div class="col-sm-8">
+								    <input type="hidden" id="advImg" value="" name="advImg"> 
+									<div id="uploadAdvImg" style="width:200px"><span class="glyphicon glyphicon-picture"></span> 选择图片</div>  
+                    			    <div id="pic_adv_div" style="width:270px; height:240px">  
+                    			       <img src="$!{basePath}/content/luckyroulette/templete/default/img/default-plate.png" width="240" height="240" id="pic_adv">  
+                    			    </div>  
+							    </div>
+							</div>
+							<div class="col-sm-4" id="adv_img2">
+							<label for="inputEmail3" class="col-sm-4 control-label" style="text-align:left;">广告图</label>
+							    <div class="col-sm-8">
+								    <input type="hidden" id="advImg2" value="" name="advImg2"> 
+									<div id="uploadAdvImg2" style="width:200px"><span class="glyphicon glyphicon-picture"></span> 选择图片</div>  
+                    			    <div id="pic_adv2_div" style="width:270px; height:240px">  
+                    			       <img src="$!{basePath}/content/luckyroulette/templete/default/img/default-plate.png" width="240" height="240" id="pic_adv2">  
+                    			    </div>  
+							    </div>
+							</div>
+                        </div>*#
+						<div class="form-group mno">
+							<div class="col-sm-8">
+								<label for="inputEmail3" class="col-sm-2 control-label" style="text-align:left;">活动规则</label>
+    							<div class="col-sm-10">
+									<script type="text/plain" name="detail" id="detail" style="height:100px;width:100%">
+									<p>									</p><p><strong><strongstyle="white-space:normal;">一、活动时间</strongstyle="white-space:normal;"></strong></p><p><spanstyle="white-space:normal;">2016年1月1日至2016年12月31日</spanstyle="white-space:normal;"></p><p><spanstyle="white-space:normal;"><strongstyle="white-space:normal;"><strong>二、抽奖方式</strong></strongstyle="white-space:normal;"></spanstyle="white-space:normal;"></p><p><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><spanstyle="white-space:normal;">每人每天可抽3次</spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></p><p><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><strongstyle="white-space:normal;"><strong>三、兑奖须知</strong></strongstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></p><p><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><spanstyle="white-space:normal;"><spanstyle="white-space:normal;">1、用户中奖后请点击领奖，填写姓名、电话、地址，或进入“我的奖品”页面点击兑奖填</spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;"></spanstyle="white-space:normal;">写</p><p>2<span style="white-space: normal;">、</span><span style="white-space: normal;">奖品将在10日内送出，到货以实际时间为准</span></p><p><span style="white-space: normal;">3<span style="white-space: normal;">、本活动由捷微H5平台提供技术支持，最终解释权归活动主办方所有</span></span></p>
+									</script>
+    							</div>
+							</div>
+						</div>
+						<!--列表 -->
+						<div class="form-group mno">
+							<ul id="tab_menu" class="nav nav-tabs">
+								<li class="active">
+									<a href="#jpDemoOrderProduct" data-toggle="tab">
+										奖品明细
+									</a>
+                                </li>
+                            </ul>
+							<!-- //update-begin--Author:zhangjiaqiang  Date:20160906 for：【插件demo】一对多，明细行间距太大 -->
+							<div id="tab_menu_content" class="tab-content">
+								<div class="tab-pane fade in active" id="jpDemoOrderProduct">
+									<button type="button" id="jpDemoOrderProduct_add" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 添加</button>
+									<button type="button" id="jpDemoOrderProduct_del" class="btn btn-danger"><i class="fa fa-trash-o"></i> 删除</button>
+                                    <table class="table table-striped" id="jpDemoOrderProduct_table" style="margin-top:15px;">
+										<thead>
+											<tr>
+                                                <th>ID</th>
+                                                <th>奖品</th>
+                                                <th>图片</th>
+												<th>数量</th>
+												<th>中奖概率&nbsp
+													<span id="popover" class="glyphicon glyphicon-question-sign" aria-hidden="true" style="font-size: 15px;" title="中奖概率算法说明" data-container="body" data-toggle="popover" data-placement="left" data-content="1. 中奖概率，例如30%代表抽100次，30<br>&nbsp;&nbsp;&nbsp;&nbsp;次有获奖机会，奖品随机  <br>2. 抽奖概率采用分奖项设置，每个奖项的<br>&nbsp;&nbsp;&nbsp;&nbsp;中奖概率为当前奖项的抽中概率。<br>3. 每个用户的总中奖概率=所有奖项中奖概<br>&nbsp;&nbsp;&nbsp;&nbsp;率之和，此时不中奖概率= 100% - 所有<br>&nbsp;&nbsp;&nbsp;&nbsp;奖项中奖概率之和。<br>4. 当某奖项的奖品剩余数量为0时，不再计<br>&nbsp;&nbsp;&nbsp;&nbsp;入总中奖概率，即总中奖概率降低。"></span>	
+												</th>
+											</tr>
+                                        </thead>
+										<tbody>
+                                        </tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</form>
+					<!--明细模板 -->
+					<table style="display:none;">
+						<tbody id="add_jpDemoOrderProduct_template">
+							<tr>
+								<td >
+									<input type="checkbox" name="awarsList[#index#].idCheck"/>
+                                </td>
+								<td>
+									<input  class="form-control awardItem" onclick="showAwardItem(this)" name="awarsList[#index#].awardsName" datatype="*" autocomplete="off"/>
+									<input type="hidden" name="awarsList[#index#].awardId" />
+								</td>
+								<td>
+    								<input type="hidden" value="http://static.h5huodong.com/upload/common/defaultPrizeImg.png" name="awarsList[#index#].awardImg">
+    								<img src="http://static.h5huodong.com/upload/common/defaultPrizeImg.png$!{version}" width="33" height="33">
+    								<span onclick="upload(this)" class="btn btn-xs btn-primary"><i class="fa fa-upload"></i> 上传</span>  
+    							</td>
+								<td>
+									<input type="text"  name="awarsList[#index#].amount" value="10"  class="form-control" datatype="n"/>
+								</td>
+								<td>
+									<div class="input-group">
+                						<input type="text"  name="awarsList[#index#].probability" value="10" class="form-control"  datatype="/^(\d|[1-9]\d|100)(\.\d{1,4})?$/" errorMsg="只能输入0~100之间的数，可保留4位小数" placeholder="请输入0~100之间的数，可保留4位小数"/>
+                						<span class="input-group-addon">%</span>
+                					</div>
+								</td>
+                            </tr>
+                        </tbody>
+                    </table>
+					<!-- //update-end--Author:zhangjiaqiang  Date:20160906 for：【插件demo】一对多，明细行间距太大 -->
+				</div>
+			</div>
+		</div>
+	</div>
+<div id="awardItemDiv" style="display:none; position: absolute;background-color: #fff;border: 1px solid;margin-bottom: 5%;height: 180px;overflow: scroll;"></div>
+<!--弹出框begin-->
+<button  data-toggle="modal" data-target=".bs-example-modal-sm" id="pictureButton" style="display:none"></button>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document" style="width: 25%;">
+    <div class="modal-content" style="height:80%;min-height:385px;">
+		<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myLargeModalLabel">上传图片</h4>
+		  <div class="modal-body">
+                <div id="uploadify"><span class="glyphicon glyphicon-picture"></span> 选择图片</div>  
+			    <div id="pic_view_div" style="width:150px; height:150px;margin-left: 21%;">  
+			       <img src="" width="150" height="150" id="pic_view">  
+			    </div>  							     
+		  </div>
+		  <div class="modal-footer">
+            <a href="javascript:sureUpload()"><button type="button" class="btn btn-primary"><i class="fa fa-check"></i> 确定</button></a>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="close"><i class="fa fa-close"></i> 关闭</button>
+		</div>
+        </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="imgSrc" value="" />
+<!--弹出框end-->
+</body>
+</html>
+<script type="text/javascript" src="$!{basePath}/plug-in/js/Validform_v5.3.2.js"></script> 
+<script type="text/javascript" src="$!{basePath}/plug-in/js/forminit.p3.js"></script> 
+<script type="text/javascript" src="$!{basePath}/content/shaketicket/back/wxActShaketicketHome-add.js$!{version}"></script>
+<script type="text/javascript" charset="utf-8" src="$!{basePath}/plug-in/plugin/UEditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="$!{basePath}/plug-in/plugin/UEditor/umeditor.min.js"></script>
+<script type="text/javascript" src="$!{basePath}/plug-in/plugin/UEditor/lang/zh-cn/zh-cn.js"></script>
+<link href="$!{basePath}/plug-in/plugin/UEditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<!--文件上传-->
+<script src="$!{basePath}/plug-in/plugin/webuploader/js/webuploader.js" type="text/javascript"></script>
+<script src="$!{basePath}/plug-in/plugin/webuploader/js/webuploaderUtils.js" type="text/javascript"></script>
+<link rel="stylesheet" href="$!{basePath}/plug-in/plugin/webuploader/css/webuploader.css" />
+<script >
+//上传图片弹出框
+var $chose;
+function upload(i){
+	$chose=i;
+	$("#pic_view").attr("src",$($chose).prev("img").attr("src"));
+	$("#pictureButton").click();
+	$("#uploadify").find("div:nth-child(2)").css("width","100%").css("height","100%");
+	$("#imgSrc").val($($chose).siblings("input").val());
+}
+//实例化上传
+var opts={
+	url:"$!{basePath}/shaketicket/back/wxActShaketicketAward/doUpload.do",
+	fileSizeLimit:0.5*1024*1024 //限制上传图片大小为0.5M
+};
+//回调函数
+$("#uploadify").uploader(opts,function(data){
+	$("#imgSrc").val(data.obj);  
+	$("#pic_view").attr("src",data.obj);
+});
+$("#uploadAdvImg").uploader(opts,function(data){
+	$("#advImg").val(data.obj);  
+	$("#pic_adv").attr("src",data.obj);
+});
+$("#uploadAdvImg2").uploader(opts,function(data){
+	$("#advImg2").val(data.obj);  
+	$("#pic_adv2").attr("src",data.obj);
+});
+$("#uploadBgImg").uploader(opts,function(data){
+	$("#bgImg").val(data.obj);  
+	$("#pic_bg").attr("src",data.obj);
+});
+//确定
+function sureUpload(){
+	$($chose).prev("img").attr("src",$("#pic_view").attr("src")); 
+	$($chose).siblings("input").val($("#imgSrc").val());
+	$("#close").click();
+}
+</script>
+<script>
+//点击其他隐藏Popover弹出框
+$('body').on('click',function(event) {
+	var id=event.target.id;
+	if(id!='popover'){
+	  $('#popover').popover('hide');
+	}else{
+	  $('#popover').popover('show');
+	}
+});
+//Popover弹出框
+$(function () { 
+	$("[data-toggle='popover']").popover({html:true});
+});
+var um = UM.getEditor('detail',{initialFrameHeight:250});
+
+jQuery(function(){
+	var jpDemoOrderProductTr = $("#add_jpDemoOrderProduct_template tr").clone();
+	$("#jpDemoOrderProduct_table tbody").append(jpDemoOrderProductTr);
+	resetTrNum('jpDemoOrderProduct_table');
+});
+
+//是否设置广告图
+function setAdv(){
+	var isSetAdv=$("#isSetAdv").val();
+	if(isSetAdv=='1'){
+		$("#adv_img").css("display","block");
+		$("#adv_img2").css("display","block");
+	}else{
+		$("#adv_img").css("display","none");
+		$("#adv_img2").css("display","none");
+	}
+}
+</script>
+<!-- //update-end--Author:zhangjiaqiang  Date:20160906 for：【插件demo】一对多，明细行间距太大 -->
+<script>
+$(function(){
+	$("#beginTime").val(new Date($!{date}).format());
+	$("#beginTime").setDefauleValue();
+	$("#endTime").val(new Date(new Date($!{date}).getTime()+1000*60*60*24*7).format());
+	$("#endTime").setDefauleValue();
+    $("#actName").val("摇一摇抽奖");
+    $("#count").val("0");
+    $("#numPerDay").val("3");
+	$("#actName").setDefauleValue();
+	$("#count").setDefauleValue();
+	$("#numPerDay").setDefauleValue();
+	$("#foucsUserCanJoin").setDefauleValue();
+	$("#winCanJoin").setDefauleValue();
+	$("#detail").setDefauleValue();
+	$("#deadlinetime").val(new Date(new Date().getTime()+1000*60*60*24*30).format("yyyy-MM-dd HH:mm:ss"));
+	$("#deadlinetime").setDefauleValue();
+});
+</script>
+<script >
+function submitForm(){
+	var submitFlag=true;
+	$('input[name^=awarsList][name$=Name]').each(function(i){
+		if(i<1){
+    		if(!$(this).val()){
+    			layeralert("请先配置奖项再录入活动",0);
+				submitFlag=false;
+    			return false;
+    		}
+		}
+	});
+	//判断开始时间不能大于结束时间
+	var beginTime=$("#beginTime").val();
+	var endTime=$("#endTime").val();
+	if(beginTime >= endTime){
+		layeralert("开始时间必须小于结束时间！",0);
+		return;
+	}
+	//判断抽奖总次数不能小于每日单抽奖次数
+	var count = $("#count").val();
+	var numPerDay = $("#numPerDay").val();
+	if(numPerDay==0){
+		layeralert("每日抽奖次数不能为0！",0);
+		return;
+	}
+	if(count!=0 && parseInt(numPerDay)>parseInt(count)){
+		layeralert("每日抽奖次数不能大于抽奖总次数！",0);
+		return;
+	}
+	//所有的总概率和不能超过100
+	var rate=0;
+    $("input[name*='probability']").each(function(){
+		rate=parseFloat($(this).val())+rate;
+    });
+	if((rate-10)>100){
+		layeralert("总中奖概率之和不能大于100%！",0);
+		return;
+	}
+	if(submitFlag){
+    	var form = $("#dailogForm").Validform();
+        form.config({tiptype:4});
+    	var flag = form.check();
+    	if(flag){
+    		parent.layer.confirm('确认提交吗？', {
+    		    btn: ['确定','取消'] //按钮
+    		}, function(){
+    			ajaxdoFormSubmit('dailogForm');
+    		}, function(){
+    		   
+    		});
+    	}else{
+    		layeralert("信息校验没有通过，请检查填写的信息",0);
+    	}
+	}
+}
+
+//展示奖项
+function showAwardItem(e){
+	var items=[];
+	#foreach($award in $awards)
+    	var item={};
+		item.id="$!award.id";
+		item.value="$!award.awardsName";
+		item.img="$!award.img";
+		items.push(item);
+	#end
+	ProcessAwardItem(e,items);
+}
+
+//奖项，奖品下拉框展示内容
+var $this;
+function ProcessAwardItem(e,items){
+	$this=$(e);
+	var option='';
+	jQuery.each(items,function(index,obj){
+		option+='<a href="javascript:;" onclick="showData(\''+obj.id+'\',\''+obj.value+'\',\''+obj.img+'\')" class="list-group-item">'+obj.value+'</a>';
+	});
+	$('#awardItemDiv').html(option);
+	
+	var thisPosition= $this.offset();
+	if($("#awardItemDiv").is(':hidden')){
+    	$("#awardItemDiv").css({left:thisPosition.left + "px", top:(thisPosition.top+$this.outerHeight())+"px",width:$this.outerWidth()+"px"}).slideDown("fast");
+	}else{
+		$("#awardItemDiv").fadeOut("fast");
+	}
+}
+
+//选中奖品
+function showData(id,value,img){
+	$this.val(value)
+	//获取下标
+	var index=$this.attr("name");
+	var i=index.substring(index.indexOf("[")+1,index.lastIndexOf("]"));
+	if(img==""){
+    	$($this.next("input")).val(id);
+	}else{
+    	$($this.next("input")).val(id);
+		if(img.indexOf("content") >= 0){
+			$this.parent().next().find("input").val("http://static.h5huodong.com/upload/common/defaultPrizeImg.png");
+			var imgsrc="http://static.h5huodong.com/upload/common/defaultPrizeImg.png";
+			$this.parent().next().find("img").attr("src",imgsrc);
+		}else{
+			$this.parent().next().find("input").val(img);
+			var imgsrc=img;
+			$this.parent().next().find("img").attr("src",imgsrc);
+		}
+	}
+	$("#awardItemDiv").fadeOut("fast");
+}
+
+//选择之后关闭下拉选框
+String.prototype.endWith=function(str){     
+  var reg=new RegExp(str+"$");     
+  return reg.test(this);        
+}
+
+$(function(){
+	$("html").on("mousedown",function(e){
+		if(!e.target.className.endWith("awardItem")){
+			$("#awardItemDiv").fadeOut("fast");
+		}
+	});
+});
+</script>

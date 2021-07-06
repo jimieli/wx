@@ -1,0 +1,232 @@
+#set($version='?v=0.0.217')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$!{shaketicket.actName}</title>
+<meta charset="UTF-8">
+<meta content="yes" name="apple-mobile-web-app-capable"></meta>
+<meta content="black" name="apple-mobile-web-app-status-bar-style"></meta>
+<meta name="format-detection" content="telephone=no"></meta>
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"></meta>
+<meta content="yes" name="full-screen"></meta>
+<meta content="true" name="x5-fullscreen"></meta>
+<meta content="application" name="browsermode"></meta>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<!--图标样式-->
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" rel="stylesheet">
+<!--自定义样式-->	
+<link href="$!{basePath}/content/shaketicket/newshake/css/index.css$!{version}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" name="actId" id="actId" value="$!{weixinDto.actId}"/>
+<input type="hidden" name="openid" id="openid" value="$!{weixinDto.openid}"/>
+<input type="hidden" name="jwid" id="jwid" value="$!{weixinDto.jwid}"/>
+<input type="hidden" name="appid" id="appid" value="$!{weixinDto.appid}"/>
+<input type="hidden" name="subscribe" id="subscribe" value="$!{weixinDto.subscribe}"/>
+<input type="hidden"  id="timestamp" value="$!{timestamp}"/>
+<input type="hidden"  id="nonceStr" value="$!{nonceStr}"/>
+<input type="hidden"  id="signature" value="$!{signature}"/>
+<input type="hidden"  id="basePath" value="$!{basePath}"/>
+<input type="hidden"  id="shareFlag" value="$!{shareFlag}"/>
+<input type="hidden"  id="actCount" value="$!{shaketicket.count}"/>
+<input type="hidden"  id="userCount" value="$!{count}"/>
+<div class="off video_exist rotate" id="audio_btn" style="display: block;" onclick="playvedio('media')">
+    <audio id="media" autoplay loop>
+        <source src="$!{basePath}/content/shaketicket/newshake/vedio/bgm.mp3$!{version}" type="audio/mpeg">
+    </audio>
+</div>
+<!--摇一摇主体-->
+<div class="content">
+	<div class="indexbg">
+		#if($!{shaketicket.bgImg}&&$!{shaketicket.bgImg}!='')
+		<img class="indexBg" src="$!{basePath}/upload/img/shaketicket/$!{weixinDto.jwid}/$!{shaketicket.bgImg}$!{version}" />
+		#else
+		<img class="indexBg" src="$!{basePath}/content/shaketicket/newshake/img/newbg.jpg$!{version}" />
+		#end
+		<img class="titleBg" src="$!{basePath}/content/shaketicket/newshake/img/title.jpg$!{version}" />
+    	<img class="shakeimg" src="$!{basePath}/content/shaketicket/newshake/img/shake-new.png$!{version}" /></div>
+		<img class="cp" src="$!{basePath}/content/shaketicket/newshake/img/cp.png$!{version}" />
+	</div>
+	<div class="nav">
+		<ul class="clearfix">
+			<li>
+				<a href="javascript:show('sm')"><img src="$!{basePath}/content/shaketicket/newshake/img/hdsm.png$!{version}"/><p>活动说明</p></a>
+			</li>
+			<li><a href="$!{basePath}/shaketicket/toMyAwardsRecordList.do?actId=$!{weixinDto.actId}&appid=$!{weixinDto.appid}&jwid=$!{weixinDto.jwid}&openid=$!{weixinDto.openid}&subscribe=$!{weixinDto.subscribe}"><img src="$!{basePath}/content/shaketicket/newshake/img/zjjl.png$!{version}"/><p>中奖记录</p></a></li>
+			<li>
+				<a href="javascript:show('fx')"><img src="$!{basePath}/content/shaketicket/newshake/img/fx.png$!{version}"/><p>分享</p></a>
+			</li>
+		</ul>
+	</div>
+	<div class="hdsmContent">
+		<div id="hdsmContent">
+			<h3>活动说明</h3>
+			<div class="back">
+				<a href="javascript:hide('sm')"><img src="$!{basePath}/content/shaketicket/newshake/img/x.png$!{version}" /></a>
+			</div>
+			<div style="height:1px;background-color:#D5D5D5;overflow:hidden;"></div>
+			<div class="pContent">$!{shaketicket.detail}</div>
+		</div>
+    </div>
+	<div class="fx" onclick="hide('fx')">
+		<div id="fx">
+			<img src="$!{basePath}/content/shaketicket/newshake/img/fxbg.png$!{version}" />
+		</div>
+    </div>
+</div>
+<!--抽奖次数提醒-->
+<div class="join-man" id="hdcountStr">
+	<div>
+		#if($!{act_Status}=='isEnd')
+			您今天还有<span id="count">0</span>次摇奖机会
+		#else
+			#if($!{shareFlag}==0)
+				#set($newNum=$!{shaketicket.numPerDay} - $!{countday}+1)
+			#else
+				#set($newNum=$!{shaketicket.numPerDay} - $!{countday})
+			#end	
+			#if($!{shaketicket.count}!=0)
+				您共有<span>$!{shaketicket.count}</span>次摇奖机会，
+    			#set($remainNum=$!{shaketicket.count} - $!{count})
+			#else
+    			#set($remainNum=$newNum)
+			#end
+				您今天还有<span id="count">#if($remainNum>=$newNum)$newNum#else$remainNum#end</span>次摇奖机会
+			#if($!{shaketicket.extraLuckyDraw}=='0'&&$!{shareFlag}==1)
+				<p id="shareMsg"> 分享给好友可额外获得<span>1</span>次抽奖机会</p>
+			#end
+		#end
+	</div>
+</div>
+<!--领奖提示框-->
+<div class="myprizes">
+	<div id="myprizes">
+		<h3>请输入领奖信息</h3>
+		<div class="back">
+			<a href="javascript:hideMyprizes()"><img src="$!{basePath}/content/shaketicket/newshake/img/x.png" /></a>
+        </div>
+        <div class="prize">
+            <div class="input">兑奖码：<span type="text" id="awardCode"></span></div>
+    		<div class="input"><input type="text" id="username" placeholder="请输入姓名" /> </div>
+    		<div class="input"><input type="text" id="tel" placeholder="请输入手机号" /></div>
+    		<div class="input"><input type="text" id="address" placeholder="请输入地址" /></div>
+    		<input name="recordId"  id="recordId" type="hidden">
+		</div>
+		<div class="button">
+			<button class="close" type="button" onclick="hideMyprizes()">关闭</button>
+			<button class="save" type="button" onclick="updateMyrecord()">保存</button>
+    	</div>
+	</div>
+</div>
+<!--摇一摇没有绑定手机提示-->
+##<div id="no_binding_phone" class="hide"><div style="text-align:left">没有绑定手机号：<br><br>$!{dictTool.getSysText('index.tip.nobindingphone',$!{shaketicket.id})}</div></div>
+<!--新摇一摇未关注提示-->
+<div class="bombScreen" id="no_focus">
+   <div style="width:70%;margin: 0 auto;margin-top:30%;">
+       <p style="text-align:center;color:#fff;font-size:1.4rem;padding-top:2%">关注下面公共号才能参与活动</p>
+       <div style="width:90%;margin: 0 auto;auto;margin-top:4%">
+          <img src="$!{qrcodeUrl}" style="width:100%;"/>
+    	  <p style="text-align:center;color:#fff;font-size:1.4rem;padding-bottom:2%;margin:0">长按识别二维码关注</p>
+		  <p style="text-align:center;color:#fff;font-size:1.4rem;">$!{dictTool.getSysText('focus_explain',$!{weixinDto.actId})}</p>
+      </div>
+	  <img onclick="hide('no_focus')" src="$!{basePath}/content/shaketicket/default/img/close.png$!{version}" style="width:10%;margin-left: 45%;margin-top: 0.5rem;"/>
+  </div>
+</div>
+<!--摇一摇音效-->
+<audio id="audio_shake" src="$!{basePath}/content/shaketicket/newshake/vedio/wechat_shake.mp3" preload></audio>
+<!--底部通用广告-->
+$!{huodong_bottom_copyright}
+<!-- 活动运行状态  start-->
+<input id="actStatus" type="hidden" value="$!{act_Status}"/> 
+#if($!{act_Status}=='noStart'||$!{act_Status}=='isEnd')
+<div id="actMsg" style="opacity: 1;width: 100%;height: 100%;position: fixed;z-index: 1000;top: 0px;left: 0px;background: rgba(0, 0, 0, 0.8) none repeat scroll 0% 0%;">
+    <div style="width:100%;height:100%;display: flex;align-items: center;justify-content: center;font-size: 2rem;color: #fff;">$!{act_Status_Msg}</div> 	
+</div>
+#end
+</body>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jquery-1.10.2.min.js$!{version}" type="text/javascript"></script>
+<!--自定义js-->
+<script src="$!{basePath}/content/shaketicket/newshake/js/index.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/myprizes.js$!{version}" type="text/javascript"></script>
+<!--摇一摇js-->
+<script src="$!{basePath}/content/shaketicket/newshake/js/shake.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/common-site.r4443.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/common.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jQueryRotate.js$!{version}" type="text/javascript"></script>
+<!-- 微信分享功能 -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '$!{appId}', // 必填，公众号的唯一标识
+        timestamp: $!{timestamp}, // 必填，生成签名的时间戳
+        nonceStr: '$!{nonceStr}', // 必填，生成签名的随机串
+        signature: '$!{signature}',// 必填，签名，见附录1【必填：通过提供接口获取】
+        jsApiList: [
+    	        'checkJsApi',
+    	        'onMenuShareTimeline',
+    	        'onMenuShareAppMessage'
+    	        ]
+         // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+       });
+    wx.ready(function () {
+		var newHdUrl = '$!{hdUrl}';
+		var friendCircleTitle = '$!{dictTool.getSysText('index.tip.sharefriendcircle',$!{shaketicket.id})}';
+		var friendTitle = '$!{dictTool.getSysText('index.tip.sharefriendtitle',$!{shaketicket.id})}';
+		var friendDesc = '$!{dictTool.getSysText('index.tip.sharefriend',$!{shaketicket.id})}';
+ 	    // 分享给朋友
+		wx.onMenuShareTimeline({
+            title: friendCircleTitle, // 分享标题【必填】
+            link: newHdUrl, // 分享链接【必填】
+            imgUrl: '$!{dictTool.getSysText('index.img.share',$!{shaketicket.id})}', // 分享图标【必填】
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+				var extraLuckyDraw='$!{shaketicket.extraLuckyDraw}';
+				if('0'==extraLuckyDraw&&'0'!='$!{shareFlag}'){
+					fxCallback(1);
+				}
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        // 分享朋友圈
+        wx.onMenuShareAppMessage({
+            title: friendTitle, // 分享标题【必填】
+            desc: friendDesc, // 分享描述【必填】
+            link: newHdUrl, // 分享链接【必填】
+            imgUrl: '$!{dictTool.getSysText('index.img.share',$!{shaketicket.id})}', // 分享图标【必填】
+            type: 'link', // 分享类型,music、video或link，不填默认为link【必填】
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+				var extraLuckyDraw='$!{shaketicket.extraLuckyDraw}';
+				if('0'==extraLuckyDraw&&'0'!='$!{shareFlag}'){
+					fxCallback(0);
+				}
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+				// alert('已取消');
+            }
+        });
+  	});
+	//分享回调
+    var fxCallback=function(type){ 
+    	jQuery.ajax({
+    		url:'$!{basePath}/shaketicket/fxCallback.do?openid=$!{weixinDto.openid}&actId=$!{weixinDto.actId}&type='+type,
+    		type:'post',
+    		dataType:'json',
+    		success:function(data){
+    			$("#shareFlag").val("0");
+    			if(data.success){
+    				var count=$("#count").html();
+    				$("#shareMsg").html("");
+    				$("#count").html(parseInt(count)+1);
+    			}
+    		}
+    	})
+    }
+</script>
+</html>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeecg.p3.scratchcards.dao.WxActScratchcardsRecordDao">
+
+	<!-- Result Map-->
+	<resultMap id="WxActScratchcardsRecord" type="com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord" >
+		<result column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="act_id" property="actId" jdbcType="VARCHAR"/>
+		<result column="openid" property="openid" jdbcType="VARCHAR"/>
+		<result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+		<result column="headImg" property="headImg" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="awards_id" property="awardsId" jdbcType="VARCHAR"/>
+		<result column="realname" property="realname" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="seq" property="seq" jdbcType="INTEGER"/>
+		<result column="jwid" property="jwid" jdbcType="VARCHAR"/>
+		<result column="prizes_name" property="prizesName" jdbcType="VARCHAR"/>
+		<result column="awards_name" property="awardsName" jdbcType="VARCHAR"/>
+		<result column="prizes_state" property="prizesState" jdbcType="VARCHAR"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="title" property="title" jdbcType="VARCHAR"/>
+		<result column="recieve_status" property="recieveStatus" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="wherecontation">
+		<trim  suffixOverrides="," >
+				 <if test="query.actId != null and query.actId != ''" >
+	  		 		/*  */
+			    	AND wasr.act_id =  #{query.actId,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.openid != null and query.openid != ''" >
+	  		 		/* openid */
+			    	AND wasr.openid =  #{query.openid,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.nickname != null and query.nickname != ''" >
+	  		 		/* 昵称 */
+			    	AND wasr.nickname =  #{query.nickname,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.headImg != null and query.headImg != ''" >
+	  		 		/* 头像 */
+			    	AND wasr.headImg =  #{query.headImg,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.createTime != null and query.createTime != ''" >
+	  		 		/* 中奖时间 */
+			    	AND wasr.create_time =  #{query.createTime,jdbcType=TIMESTAMP}
+				 </if>
+				 <if test="query.awardsId != null and query.awardsId != ''" >
+	  		 		/* 奖项 */
+			    	AND wasr.awards_id =  #{query.awardsId,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.realname != null and query.realname != ''" >
+	  		 		/* 收货人姓名 */
+			    	AND wasr.realname =  #{query.realname,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.phone != null and query.phone != ''" >
+	  		 		/* 手机号 */
+			    	AND wasr.phone =  #{query.phone,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.address != null and query.address != ''" >
+	  		 		/* 地址 */
+			    	AND wasr.address =  #{query.address,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.seq != null and query.seq != ''" >
+	  		 		/* 抽奖序号 */
+			    	AND wasr.seq =  #{query.seq,jdbcType=INTEGER}
+				 </if>
+				 <if test="query.jwid != null and query.jwid != ''" >
+	  		 		/* 对应微信平台原始id */
+			    	AND wasr.jwid =  #{query.jwid,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.prizesName != null and query.prizesName != ''" >
+	  		 		/* 奖品名字 */
+			    	AND wasr.prizes_name =  #{query.prizesName,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.awardsName != null and query.awardsName != ''" >
+	  		 		/* 中奖状态(0未中奖，1中奖) */
+			    	AND wasr.awards_name =  #{query.awardsName,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.prizesState != null and query.prizesState != ''" >
+	  		 		/*  */
+			    	AND wasr.prizes_state =  #{query.prizesState,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.code != null and query.code != ''" >
+	  		 		/* 奖品编码 */
+			    	AND wasr.code =  #{query.code,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.recieveStatus != null and query.recieveStatus != ''" >
+	  		 		/* 奖品编码 */
+			    	AND wasr.recieve_status =  #{query.recieveStatus,jdbcType=VARCHAR}
+				 </if>
+		</trim>
+	</sql>
+
+	<!--
+	方法名称: insert
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.insert
+	开发信息: 
+	处理信息: 保存信息
+	-->
+	<insert id="insert" parameterType="Object" >
+	  INSERT  INTO  wx_act_scratchcards_record   /* 砍价帮砍记录表 */  
+					(	
+                      id                            /* 记录id */ 
+                     ,act_id                        /*  */ 
+                     ,openid                        /* openid */ 
+                     ,nickname                      /* 昵称 */ 
+                     ,headImg
+                     ,create_time                   /* 中奖时间 */ 
+                     ,awards_id                     /* 奖项 */ 
+                     ,realname                      /* 收货人姓名 */ 
+                     ,phone                         /* 手机号 */ 
+                     ,address                       /* 地址 */ 
+                     ,seq                           /* 抽奖序号 */ 
+                     ,jwid                          /* 对应微信平台原始id */ 
+                     ,prizes_name                   /* 奖品名字 */ 
+                     ,awards_name                   /* 中奖状态(0未中奖，1中奖) */ 
+                     ,prizes_state                  /*  */ 
+                     ,code                          /* 奖品编码 */ 
+                     ,recieve_status
+					)
+			values (
+                      #{id,jdbcType=VARCHAR}                            /* 记录id */ 
+                     ,#{actId,jdbcType=VARCHAR}                         /*  */ 
+                     ,#{openid,jdbcType=VARCHAR}                        /* openid */ 
+                     ,#{nickname,jdbcType=VARCHAR}                      /* 昵称 */ 
+                     ,#{headImg,jdbcType=VARCHAR}        
+                     ,#{createTime,jdbcType=TIMESTAMP}                    /* 中奖时间 */ 
+                     ,#{awardsId,jdbcType=VARCHAR}                      /* 奖项 */ 
+                     ,#{realname,jdbcType=VARCHAR}                      /* 收货人姓名 */ 
+                     ,#{phone,jdbcType=VARCHAR}                         /* 手机号 */ 
+                     ,#{address,jdbcType=VARCHAR}                       /* 地址 */ 
+                     ,#{seq,jdbcType=INTEGER}                           /* 抽奖序号 */ 
+                     ,#{jwid,jdbcType=VARCHAR}                          /* 对应微信平台原始id */ 
+                     ,#{prizesName,jdbcType=VARCHAR}                    /* 奖品名字 */ 
+                     ,#{awardsName,jdbcType=VARCHAR}                    /* 中奖状态(0未中奖，1中奖) */ 
+                     ,#{prizesState,jdbcType=VARCHAR}                   /*  */ 
+                     ,#{code,jdbcType=VARCHAR}                          /* 奖品编码 */ 
+                     ,#{recieveStatus,jdbcType=VARCHAR}                          /* 奖品编码 */ 
+					)
+	</insert>
+
+	
+	<!--
+	方法名称: update
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.update
+	开发信息: 
+	处理信息: 修改信息
+	-->  
+	 <update id="update" parameterType="Object" >
+	  UPDATE   wx_act_scratchcards_record  	/* 砍价帮砍记录表 */
+	  			<trim   prefix="SET" suffixOverrides="," >
+						 <if test="actId != null">
+		    		 		/*  */ 
+	    		 			act_id = #{actId,jdbcType=VARCHAR},
+						 </if>
+						 <if test="openid != null">
+		    		 		/* openid */ 
+	    		 			openid = #{openid,jdbcType=VARCHAR},
+						 </if>
+						 <if test="nickname != null">
+		    		 		/* 昵称 */ 
+	    		 			nickname = #{nickname,jdbcType=VARCHAR},
+						 </if>
+						 <if test="headImg != null">
+		    		 		/* 昵称 */ 
+	    		 			headImg = #{headImg,jdbcType=VARCHAR},
+						 </if>
+						 <if test="createTime != null">
+		    		 		/* 中奖时间 */ 
+	    		 			create_time = #{createTime,jdbcType=TIMESTAMP},
+						 </if>
+						 <if test="awardsId != null">
+		    		 		/* 奖项 */ 
+	    		 			awards_id = #{awardsId,jdbcType=VARCHAR},
+						 </if>
+						 <if test="realname != null">
+		    		 		/* 收货人姓名 */ 
+	    		 			realname = #{realname,jdbcType=VARCHAR},
+						 </if>
+						 <if test="phone != null">
+		    		 		/* 手机号 */ 
+	    		 			phone = #{phone,jdbcType=VARCHAR},
+						 </if>
+						 <if test="address != null">
+		    		 		/* 地址 */ 
+	    		 			address = #{address,jdbcType=VARCHAR},
+						 </if>
+						 <if test="seq != null">
+		    		 		/* 抽奖序号 */ 
+	    		 			seq = #{seq,jdbcType=INTEGER},
+						 </if>
+						 <if test="jwid != null">
+		    		 		/* 对应微信平台原始id */ 
+	    		 			jwid = #{jwid,jdbcType=VARCHAR},
+						 </if>
+						 <if test="prizesName != null">
+		    		 		/* 奖品名字 */ 
+	    		 			prizes_name = #{prizesName,jdbcType=VARCHAR},
+						 </if>
+						 <if test="awardsName != null">
+		    		 		/* 中奖状态(0未中奖，1中奖) */ 
+	    		 			awards_name = #{awardsName,jdbcType=VARCHAR},
+						 </if>
+						 <if test="prizesState != null">
+		    		 		/*  */ 
+	    		 			prizes_state = #{prizesState,jdbcType=VARCHAR},
+						 </if>
+						 <if test="code != null">
+		    		 		/* 奖品编码 */ 
+	    		 			code = #{code,jdbcType=VARCHAR},
+						 </if>
+						 <if test="recieveStatus != null">
+		    		 		/* 领奖状态 */ 
+	    		 			recieve_status = #{recieveStatus,jdbcType=VARCHAR},
+						 </if>
+	  	  		</trim>
+				WHERE
+	  	 		 		id = #{id}		/* 序号 */ 
+	 </update>
+	
+	<!--
+	方法名称: get
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.get
+	开发信息: 
+	处理信息: 根据主键查询记录
+	-->
+	<select id="get" parameterType="Object"  resultMap="WxActScratchcardsRecord">
+		   SELECT   
+                   wasr.id                            /* 记录id */ 
+                  ,wasr.act_id                        /*  */ 
+                  ,wasr.openid                        /* openid */ 
+                  ,wasr.nickname                      /* 昵称 */ 
+                  ,wasr.headImg
+                  ,wasr.create_time                   /* 中奖时间 */ 
+                  ,wasr.awards_id                     /* 奖项 */ 
+                  ,wasr.realname                      /* 收货人姓名 */ 
+                  ,wasr.phone                         /* 手机号 */ 
+                  ,wasr.address                       /* 地址 */ 
+                  ,wasr.seq                           /* 抽奖序号 */ 
+                  ,wasr.jwid                          /* 对应微信平台原始id */ 
+                  ,wasr.prizes_name                   /* 奖品名字 */ 
+                  ,wasr.awards_name                   /* 中奖状态(0未中奖，1中奖) */ 
+                  ,wasr.prizes_state                  /*  */ 
+                  ,wasr.code                          /* 奖品编码 */ 
+                  ,wasr.recieve_status
+		   FROM   wx_act_scratchcards_record      AS wasr      /* 砍价帮砍记录表 */ 
+		   WHERE
+				id = #{id}				/* 序号 */ 
+	</select>
+	
+	<!--
+	方法名称: delete
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.delete
+	开发信息: 
+	处理信息: 删除记录
+	-->
+	<delete id="delete" parameterType="Object">
+		DELETE 	FROM wx_act_scratchcards_record 	/* 砍价帮砍记录表 */  
+		WHERE 
+			id = #{id}					/* 序号 */ 
+	</delete>
+	
+	<!--
+	方法名称: count
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.count
+	开发信息: 
+	处理信息: 列表总数
+	-->
+	<select id="count" resultType="java.lang.Integer"  parameterType="Object">
+		SELECT count(*)  FROM  wx_act_scratchcards_record      AS wasr      /* 砍价帮砍记录表 */ 
+		 WHERE 1=1
+		    <include refid="wherecontation"/>
+	</select>
+  	
+  	<!--
+	方法名称: queryPageList
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.queryPageList
+	开发信息: 
+	处理信息: 列表
+	-->
+	<select id="queryPageList" parameterType="Object"  resultMap="WxActScratchcardsRecord">
+		    SELECT 
+                   wasr.id                            /* 记录id */ 
+                  ,wasr.act_id                        /*  */ 
+                  ,wasr.openid                        /* openid */ 
+                  ,wasr.nickname                      /* 昵称 */ 
+                  ,wasr.headImg
+                  ,wasr.create_time                   /* 中奖时间 */ 
+                  ,wasr.awards_id                     /* 奖项 */ 
+                  ,wasr.realname                      /* 收货人姓名 */ 
+                  ,wasr.phone                         /* 手机号 */ 
+                  ,wasr.address                       /* 地址 */ 
+                  ,wasr.seq                           /* 抽奖序号 */ 
+                  ,wasr.jwid                          /* 对应微信平台原始id */ 
+                  ,wasr.prizes_name                   /* 奖品名字 */ 
+                  ,wasr.awards_name                   /* 中奖状态(0未中奖，1中奖) */ 
+                  ,wasr.prizes_state                  /*  */ 
+                  ,wasr.code                          /* 奖品编码 */
+                  ,wasr.recieve_status 
+                  ,was.title						  /* 活动名称 */
+		FROM   	 wx_act_scratchcards_record      AS wasr,      /* 砍价帮砍记录表 */ 
+				 wx_act_scratchcards AS was
+		WHERE 1=1
+		and wasr.act_id=was.id		
+		   <include refid="wherecontation"/>
+		ORDER BY wasr.create_time DESC
+		LIMIT  #{startRow}  		/* 开始序号 */ 
+			  ,#{pageSize}		/* 每页显示条数 */ 
+	</select>
+	
+	  <select id="getMaxAwardsSeq" resultType="java.lang.Integer"  parameterType="Object">
+		SELECT max(wasr.seq)  FROM wx_act_scratchcards_record      AS wasr     /* 配置 */
+		 WHERE wasr.act_id = #{actId}
+	</select>	
+	
+	 <select id="queryByCode" parameterType="Object"  resultMap="WxActScratchcardsRecord" >
+	  SELECT * from wx_act_scratchcards_record 
+	   where
+	    code=#{code}
+	    LIMIT 0,50
+	  </select>
+	  
+	  
+	    <select id="queryList" parameterType="Object"  resultMap="WxActScratchcardsRecord" >
+	  				SELECT * from wx_act_scratchcards_record 
+	  				where act_id=#{actId}
+	  				order by create_time desc LIMIT 0,50
+	  </select>
+	  
+	   <select id="queryMyList" parameterType="Object"  resultMap="WxActScratchcardsRecord" >
+	  				SELECT * from wx_act_scratchcards_record where  openid=#{openid}
+	  				and act_id=#{actId}
+	  				and prizes_state = 1	
+	  				order by create_time desc LIMIT 0,50
+	  </select>
+	  
+	  <!--
+		方法名称: exportExcel
+		调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.exportExcel
+		开发信息: 
+		处理信息: 查询抽奖纪录(导出)
+		-->
+	   <select id="exportExcel" parameterType="Object"  resultMap="WxActScratchcardsRecord" >
+	  		SELECT 
+	  			 wasr.id						/* 主键id */
+	  			,wasr.act_id					/* 活动id */
+	  			,wasr.openid					/* openid */
+	  			,wasr.nickname                      /* 昵称 */ 
+                ,wasr.create_time                   /* 抽奖时间 */ 
+                ,wasr.awards_id                     /* 奖项 */ 
+                ,wasr.realname                      /* 收货人姓名 */ 
+                ,wasr.phone                         /* 手机号 */ 
+                ,wasr.address                       /* 地址 */ 
+                ,wasr.jwid                          /* 对应微信平台原始id */ 
+                ,wasr.prizes_name                   /* 奖品名字 */ 
+                ,was.title                          /* 活动名称 */ 
+	  		FROM 
+	  			wx_act_scratchcards_record AS wasr, /* 砍价帮砍纪录表 */
+	  			wx_act_scratchcards AS was			/* 活动主表 */
+	  		WHERE
+	  			wasr.act_id=was.id
+	  			AND wasr.act_id=#{actId}
+	  			AND wasr.jwid=#{jwid}
+	  		ORDER BY wasr.create_time DESC
+	  </select>
+	  
+	  <!--
+		方法名称: exportExcel
+		调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsRecord.exportExcel
+		开发信息: 
+		处理信息: 查询中奖纪录(导出)
+		-->
+	   <select id="exportExcel1" parameterType="Object"  resultMap="WxActScratchcardsRecord" >
+	  		SELECT 
+	  			 wasr.id						/* 主键id */
+	  			,wasr.act_id					/* 活动id */
+	  			,wasr.openid					/* openid */
+	  			,wasr.nickname                      /* 昵称 */ 
+                ,wasr.create_time                   /* 中奖时间 */ 
+                ,wasr.awards_id                     /* 奖项 */ 
+                ,wasr.realname                      /* 收货人姓名 */ 
+                ,wasr.phone                         /* 手机号 */ 
+                ,wasr.address                       /* 地址 */ 
+                ,wasr.jwid                          /* 对应微信平台原始id */ 
+                ,wasr.prizes_name                   /* 奖品名字 */ 
+                ,was.title                          /* 活动名称 */ 
+	  		FROM 
+	  			wx_act_scratchcards_record AS wasr, /* 砍价帮砍纪录表 */
+	  			wx_act_scratchcards AS was			/* 活动主表 */
+	  		WHERE
+	  			wasr.act_id=was.id
+	  			AND wasr.act_id=#{actId}
+	  			AND wasr.jwid=#{jwid}
+	  			AND wasr.prizes_state = 1     
+	  		ORDER BY wasr.create_time DESC
+	  </select>
+	  
+	  <select id="countByActId" resultType="java.lang.Integer"  parameterType="Object">
+		SELECT count(*)  FROM  wx_act_scratchcards_record      AS wasr      /* 砍价帮砍记录表 */ 
+		WHERE 1=1
+		AND wasr.act_id=#{actId}
+	  	AND wasr.jwid=#{jwid}
+	  	AND wasr.prizes_state = 1  
+	  	<if test="openid != null and openid != ''" >
+	  	   AND wasr.openid =  #{openid,jdbcType=VARCHAR}
+		</if> 
+	 </select>
+	 
+	  <select id="queryListByActId" resultMap="WxActScratchcardsRecord" parameterType="Object">
+		SELECT  
+		         wasr.id						/* 主键id */
+	  			,wasr.act_id					/* 活动id */
+	  			,wasr.openid					/* openid */
+	  			,wasr.nickname                      /* 昵称 */ 
+                ,wasr.create_time                   /* 中奖时间 */ 
+                ,wasr.awards_id                     /* 奖项 */ 
+                ,wasr.realname                      /* 收货人姓名 */ 
+                ,wasr.phone                         /* 手机号 */ 
+                ,wasr.address                       /* 地址 */ 
+                ,wasr.jwid                          /* 对应微信平台原始id */ 
+                ,wasr.prizes_name                   /* 奖品名字 */ 
+                ,wasr.awards_name                   /* 奖项名字 */ 
+                ,wasr.nickname                       /* 名字 */ 
+                ,wasr.headImg                        /* 名字 */ 
+                ,wasr.code                          /* 奖品编码 */
+                ,wasr.recieve_status                          /* 核销状态 */
+                ,wasp.img 
+        FROM  wx_act_scratchcards_record      AS wasr      /* 砍价帮砍记录表 */ 
+        LEFT JOIN wx_act_scratchcards_relation rel ON wasr.awards_id=rel.award_id
+        LEFT JOIN wx_act_scratchcards_prizes wasp ON wasp.id=rel.prize_id
+		WHERE 1=1
+		AND wasr.act_id=#{actId}
+		AND rel.act_id=#{actId}
+	  	AND wasr.jwid=#{jwid}
+	  	AND wasr.prizes_state = 1  
+	  	<if test="openid != null and openid != ''" >
+	  	   AND wasr.openid =  #{openid,jdbcType=VARCHAR}
+		</if>
+	  	ORDER BY wasr.create_time DESC
+	  	LIMIT #{startRow}
+	  	     ,#{pageSize} 
+	 </select>
+</mapper>

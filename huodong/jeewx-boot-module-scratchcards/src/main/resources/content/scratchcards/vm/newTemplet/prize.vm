@@ -1,0 +1,325 @@
+﻿#set($version='?v=0.0.09')
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>$!{scratchcards.title}</title>
+</head>
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css$!{version}" rel="stylesheet">
+<link href="$!{basePath}/content/scratchcards/css/main.css$!{version}" rel="stylesheet" type="text/css"/>
+<script src="$!{basePath}/content/scratchcards/js/jquery.js$!{version}" type="text/javascript"></script>
+<style>
+     .lj{
+/*         display: block;  */
+        text-align: center;
+		width: 60px;
+		display: inline-block;
+		font-size: 15px;
+		height:40%;
+		color: #fff;
+		border-radius:8px;
+/* 		padding: 6px 0; */
+		margin: 15px -2px 0 8px ;
+		border: 1px solid #d84e43;
+		background-color:#d84e43;
+		vertical-align: middle;
+		line-height: 25px;
+     }
+     .ylj{
+        text-align: center;
+		width: 60px;
+		display: inline-block;
+		font-size: 15px;
+		height:40%;
+		color: #ffffff;
+		border-radius:8px;
+		margin: 15px -2px 0 8px ;
+		border: 1px solid #e8928b;
+		background-color:#e8928b;
+		vertical-align: middle;
+		line-height: 25px;
+     }
+     .more { padding: 10px; text-align: center; font-size: 14px; color: #666; display: block;overflow-x:hidden }
+ /** 右下角跳转按钮 跳转到列表 */
+#list_note_icon
+{
+    position: fixed;
+    bottom: 10%;
+    right: 0%;
+    z-index: 888;
+    background: #ff9900;
+    width: 70px;
+    height: 50px;
+    border-radius: 30px 0 0 30px;
+    box-shadow: 2px 2px 2px #888888;
+    opacity:0.7 ;
+    font-size:15px;
+    text-align: center;
+}
+
+#list_note_icon:before
+{
+    content: "返回";
+    display:block;
+/*     background:#333; */
+    color: #eeeeee;
+    position:absolute;
+    height:3px;
+    width:40px;
+    top:15px;
+    left:20px;
+/*     box-shadow:0 10px #333, 0 20px #333, 0 30px #333; */
+/*     -webkit-box-shadow:0 10px #333, 0 20px #333, 0 30px #333; */
+/*     -moz-box-shadow:0 10px #333, 0 20px #333, 0 30px #333; */
+}
+</style>
+<body style="background: #f2f2f2;">
+		<div class="yyybg">
+			<img src="$!{basePath}/content/scratchcards/img/zjjlbg2.png"/>
+			<h3>我的中奖记录</h3>
+		</div>
+		<div class="cyxx" style="margin-top: 5px;">
+			<p><span>$!{joinNum}</span>人参与 #*<time>2</time>分钟抢光*#</p>
+		</div>
+		<div class="zjxx" style="overflow-x:hidden" id="zjxx">
+			<ul id="recored_list">
+				<li>
+					<i><img src="$!{basePath}/content/scratchcards/img/icon.png"/></i>
+					<p class="nameAndTime">
+						<span>昵称</span>
+						<time>4月11日 12:29</time>
+					</p>
+					<p class="jp"><span>0.15元</span><span class="lj">领奖</span></p>
+				</li>
+			</ul>
+		</div>
+		<ul id="more_ul">
+               <li class="more"><a href="javascript:;"></a></li>
+         </ul>
+		<!--领奖提示框1-->
+<div class="myprizes">
+	<div id="myprizes">
+		<h3>请输入领奖信息</h3>
+		<div class="back">
+			<a href="javascript:hide()"><img src="$!{basePath}/content/scratchcards/img/x.png" /></a>
+        </div>
+        <div class="prize">
+            <div class="input" style="color:#d84e43;font-size: 15px;">兑奖码：<span type="text" id="awardCode"></span></div>
+    		<div class="input"><input type="text" id="username" placeholder="请输入姓名" /> </div>
+    		<div class="input"><input type="text" id="tel" placeholder="请输入手机号" /></div>
+    		<div class="input"><input type="text" id="address" placeholder="请输入地址" /></div>
+    		<input name="recordId"  id="recordId" type="hidden">
+		</div>
+		<div class="foot">
+			<button type="button" onclick="hide()" style="background-color: #ccc;border: 1px solid #ccc;">关闭</NOtton>
+			<button type="button" onclick="updateMyrecord()">保存</NOtton>
+    	</div>
+	</div>
+</div>
+ <!--领奖信息2  -->
+    <div id="mcovear" class="pop" style="display:none;">
+	      <div class="box">
+		      	<b class="closeb" onClick="document.getElementById('mcovear').style.display='none';" ></b>
+		        <h1>填写您的资料</h1>
+		        <div class="inputqy">
+		            <h2 id="error_tip"></h2>
+		            <span id="iconimg1" style="position: absolute;top: 67px;left: 25px;"><img style="width:20px;" src="$!{basePath}/content/h5spiderman/img/user.png"></img></span>
+		            <input  type="text" id="true_name" value="$!{registration.realname}" placeholder="请填入真实姓名" />
+		            <span id="iconimg2" style="position: absolute;top: 117px;left: 25px;"><img style="width:20px;" src="$!{basePath}/content/h5spiderman/img/phone.png"></img></span>
+					<input type="text" id="phone" value="$!{registration.phone}" placeholder="请填入手机号码" />
+		            <span id="iconimg3" style="position: absolute;top: 164px;left: 25px;"><img style="width:20px;" src="$!{basePath}/content/h5spiderman/img/address.png"></img></span>
+					<input type="text" id="address" value="$!{registration.address}" placeholder="请填入详细地址" />
+		        </div>
+		        <div class="but_con"  >
+		            <button class="button_yes" onClick="sendtel()">确定</button>
+		            <div class="clr"></div>
+		        </div>
+	      </div>	
+    </div>
+    
+    ##<div id="list_note_icon"></div>
+		<!-- 底部广告-->
+		$!{huodong_bottom_copyright}
+</body>
+<script type="text/javascript">
+var actId='$!{weixinDto.actId}';
+var jwid='$!{weixinDto.jwid}';
+var openid='$!{weixinDto.openid}';
+var pageNo = 0;
+var pageSize= 5;
+var requestFlag = true;
+$("#recored_list").html("");
+$("#more_ul").html("");
+$(function(){ 
+    queryPeizeRecored();
+	 /*$(window).bind("scroll",function(){
+		//滚动加载
+		if ($(document).scrollTop() + $(window).clientHeight() > $(document).scrollHeight()-50) {
+			 if(!requestFlag){
+				 return;
+			 }
+			 pageNo = pageNo+1;
+			 queryPeizeRecored();
+		}
+	}); */
+	
+   var divscroll = document.getElementById('zjxx');  
+  function divScroll() {       
+	    var wholeHeight = divscroll.scrollHeight;      
+	    var scrollTop = divscroll.scrollTop;      
+	    var divHeight = divscroll.clientHeight;      
+		if(scrollTop + divHeight >= wholeHeight-10){         
+			     if(!requestFlag){
+					 return;
+				 }
+				 pageNo = pageNo+1;
+				 queryPeizeRecored();
+		     }     
+		 }   
+	  divscroll.onscroll = divScroll;
+})
+//查询中奖记录
+function queryPeizeRecored(){
+		jQuery.ajax({
+			url:'$!{basePath}/scratchcards/queryPrizeRecode.do',
+			async:false,
+			data:{
+				actId:actId,
+				jwid:jwid,
+				openid:openid,
+				pageNo:pageNo,
+				pageSize:pageSize
+			},
+			type:'POST',
+			dataType:'json',
+			success:function(data){
+				var html='';
+				if(data.attributes.count<pageSize){
+				   requestFlag = false;
+				}
+				jQuery.each(data.attributes.wxActScratchcards,function(idx,item){
+					 /*奖品图片*/
+					 if(item.img){
+					    html+='<li><i><img src="'+item.img+'"/></i>';
+					 }else{
+					    html+='<li><i><img src="http://static.h5huodong.com/upload/common/defaultPrizeImg.png"/></i>';
+					 }
+                     html+='<p class="nameAndTime" style="margin-left:10px;font-size:15px;">';
+					 /*奖品名称*/
+					 if(item.prizesName.length<10)
+					 html+='<span><strong>'+item.prizesName+'</strong></span>';
+					 else
+					 html+='<span><strong>'+item.prizesName.substring(0, 10)+'...</strong></span>';
+					 /*时间*/
+                     html+='<time>'+new Date(item.createTime).format()+'</time></p>';
+					 /*奖项*/
+					 if(item.recieveStatus=='0')
+                     html+='<p class="jp"><span class="lj" onclick="lj(\''+item.id+'\',\''+item.code+'\',\''+item.realname+'\',\''+item.address+'\',\''+item.phone+'\')">领奖</span></p>';
+                     else
+                     html+='<p class="jp"><span class="ylj">已领奖</span></p>';
+                     //html+='<p class="jp"><span>'+item.prizesName+'</span></p>';
+                     html+='</li>';
+                     //html+='<p><span class="lj">领奖</span></p>';
+				});
+				$("#recored_list").append(html);
+				html = '<li class="more"><a href="javascript:;">我是有底线的</a></li>';
+		        //没有相关数据
+				if(!requestFlag && pageNo>0){
+				  $("#more_ul").html(html);
+				}
+			}
+		});
+	}
+function updateMyrecord(){
+	var id=$("#recordId").val();
+	var realname=$("#username").val();
+	var phone=$("#tel").val();
+	var address=$("#address").val();
+	    if(realname == '') {
+			alert('请输入姓名');
+			return;
+		}
+		if(phone == '') {
+			alert('请输入手机号码');
+			return;
+		}
+		var regu = /^[1][0-9]{10}$/;
+		if(!regu.test(phone)) {
+			alert('请输入正确的手机号码');
+			return;
+		}
+		if(address == '') {
+			alert('请输入详细地址');
+			return;
+		}
+	jQuery.ajax({
+		url:'$!{basePath}/scratchcards/updateMyrecord.do',
+		async:false,
+		data:{
+			id:id,
+			realname:realname,
+			phone:phone,
+			address:address
+		},
+		type:'POST',
+		dataType:'json',
+		success:function(data){
+			if(data.success){
+				alert("提交成功，谢谢参与！");
+				location.reload();
+			}else{
+				alert("提交失败！");
+			}
+		}
+	});
+}	
+/*领奖*/
+function lj(id,code,name,address,phone){
+	$("#recordId").val(id);
+	$("#awardCode").html(code);
+	if(name !=null && name !='' && name !='null')
+	$("#username").val(name);
+	if(phone !=null && phone !='' && phone !='null')
+	$("#tel").val(phone);
+	if(address !=null && address !='' && address !='null')
+	$("#address").val(address);
+	$(".myprizes").show();
+	$("#myprizes").show();
+	//$("#mcovear").show();
+}	
+function hide(){
+	$("#username").val("");
+	$("#tel").val("");
+	$("#address").val("");
+	$(".myprizes").hide();
+	$("#myprizes").hide();
+}	
+Date.prototype.format=function(format){
+	if(!format){
+		format="yyyy-MM-dd HH:mm";
+	}
+	var paddNum = function(num){
+		num += "";
+		return num.replace(/^(\d)$/,"0$1");
+	}
+	 var cfg = {
+		yyyy :this.getFullYear()//年
+		,yy : this.getFullYear().toString().substring(2)//年
+		,M  : this.getMonth() + 1  //月
+		,MM : paddNum(this.getMonth() + 1) //月
+		,d  : this.getDate()//日
+		,dd : paddNum(this.getDate())//日
+		,HH : paddNum(this.getHours())//时
+		,mm : paddNum(this.getMinutes())//分
+		,ss : paddNum(this.getSeconds())//秒
+	};
+	return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
+}
+function resetCss(){
+	$("#iconimg1").css("top","83px");
+	$("#iconimg2").css("top","132px");
+	$("#iconimg3").css("top","180px");
+	}
+</script>
+</html>

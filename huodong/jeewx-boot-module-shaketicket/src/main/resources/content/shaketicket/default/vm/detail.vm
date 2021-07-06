@@ -1,0 +1,89 @@
+#set($version='?v=3.0.7')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$!{shaketicket.actName}</title>
+<meta charset="UTF-8">
+<meta content="yes" name="apple-mobile-web-app-capable"></meta>
+<meta content="black" name="apple-mobile-web-app-status-bar-style"></meta>
+<meta name="format-detection" content="telephone=no"></meta>
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"></meta>
+<meta content="yes" name="full-screen"></meta>
+<meta content="true" name="x5-fullscreen"></meta>
+<meta content="application" name="browsermode"></meta>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<script src="$!{basePath}/content/shaketicket/default/js/wxcheck.js$!{version}" type="text/javascript"></script>
+<link href="$!{basePath}/content/shaketicket/default/css/style.css$!{version}" type="text/css" rel="stylesheet" />
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" rel="stylesheet">
+<script src="$!{basePath}/content/shaketicket/default/js/jquery.js$!{version}" type="text/javascript"></script>
+<style>
+        body {background-color: #e84144; color:#f9dc97;margin:10px auto; padding:0px 10px; font-size:14px;}
+        .h31{ font-size:16px; color:#f9dc97; padding-top:10px; padding-bottom:5px; font-weight:bold;}
+        .pinfo{ padding:15px; line-height:19px;color:#f9dc97;  }
+        .pinfo p{ margin-bottom:7px}
+        .divmore{width:100%; height:44px; line-height:44px; background:#fff; border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf; text-align:center; margin-bottom:10px;}
+        .divmore a{ font-size:16px; color:#02bb00;}
+</style>
+<style>
+ .copyright {
+		position: absolute!important;
+		bottom: auto!important;
+		height: auto!important;
+		line-height: 0.8rem!important;
+		top: -12px;
+    }
+</style>
+</head>
+<body>
+<div>
+	<div class="mylist" style="width: 50%;">
+		<div class="title"><img src="$!{basePath}/content/shaketicket/default/img/title_2.png"></div>
+    </div>
+    
+	<div class="pinfo">
+		<p>
+			$!{shaketicket.detail}
+		</p>
+	</div>
+	<div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
+		$!{huodong_bottom_copyright}
+		<nav>
+			<ul id="top_menu" class="top_menu">
+				<li>
+					<a href="javascript:void(0)"><img src="$!{basePath}/content/shaketicket/default/img/plugmenu10.png$!{version}"><label>活动规则</label></a>
+				</li>  
+				<li class="home">##
+					<a href="$!{basePath}/shaketicket/toIndex.do?actId=$!{weixinDto.actId}&appid=$!{weixinDto.appid}&jwid=$!{weixinDto.jwid}&openid=$!{weixinDto.openid}&subscribe=$!{weixinDto.subscribe}" style="background: url('$!{basePath}/content/shaketicket/default/img/home.png$!{version}') no-repeat center center;opacity:0.75;"></a>
+				</li>
+				<li>
+					<a href="$!{basePath}/shaketicket/toMyAwardsRecordList.do?actId=$!{weixinDto.actId}&appid=$!{weixinDto.appid}&jwid=$!{weixinDto.jwid}&openid=$!{weixinDto.openid}&subscribe=$!{weixinDto.subscribe}"><img src="$!{basePath}/content/shaketicket/default/img/plugmenu11.png$!{version}"><label>我的奖品</label></a>
+				</li>   
+			</ul>
+		</nav>
+	</div>
+</div>
+<input type="hidden" name="jwid" id="jwid" value="$!{weixinDto.jwid}"/>
+<input type="hidden" name="openid" id="openid" value="$!{weixinDto.openid}"/>
+<input type="hidden" name="subscribe" id="subscribe" value="$!{weixinDto.subscribe}"/>
+<input type="hidden" name="appid" id="appid" value="$!{weixinDto.appid}"/>
+<input type="hidden" name="actId" id="actId" value="$!{weixinDto.actId}"/>
+<input type="hidden"  id="timestamp" value="$!{timestamp}"/>
+<input type="hidden"  id="nonceStr" value="$!{nonceStr}"/>
+<input type="hidden"  id="signature" value="$!{signature}"/>
+</body>
+<!-- 禁用微信分享功能 -->
+<script type="text/javascript" src="$!{basePath}/content/shaketicket/default/js/hiddenWxShare.js$!{version}"></script>
+<script type="text/javascript">
+function updateRecord(id,phone,realname,address){
+$('#username').val(realname);
+$('#tel').val(phone);
+$('#address').val(address);
+$('#recordId').val(id);
+$('#mcovear').show();
+}
+</script>
+<script>
+$!{dictTool.getSysText('statistics',$!{bargain.id})}
+</script>
+</html>

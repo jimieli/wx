@@ -1,0 +1,153 @@
+#set($version='?v=0.0.217')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$!{shaketicket.actName}</title>
+<meta charset="UTF-8">
+<meta content="yes" name="apple-mobile-web-app-capable"></meta>
+<meta content="black" name="apple-mobile-web-app-status-bar-style"></meta>
+<meta name="format-detection" content="telephone=no"></meta>
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"></meta>
+<meta content="yes" name="full-screen"></meta>
+<meta content="true" name="x5-fullscreen"></meta>
+<meta content="application" name="browsermode"></meta>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<!--图标样式-->
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" rel="stylesheet">
+<!--自定义样式-->	
+<link href="$!{basePath}/content/shaketicket/newshake/css/jquery.fullPage.css$!{version}" type="text/css" rel="stylesheet" />
+<style >
+	#adv1 { background: url($!{basePath}/upload/img/shaketicket/$!{weixinDto.jwid}/$!{shaketicket.advImg}$!{version});background-size: 100% 100%;}
+	#adv2 { background: url($!{basePath}/upload/img/shaketicket/$!{weixinDto.jwid}/$!{shaketicket.advImg2}$!{version});background-size: 100% 100%;}
+	.ui-arrow {
+    	position: absolute;
+    	left: 46%;
+    	top: 93%;
+    	width: 3rem;
+    	height: 1.5rem;
+    	z-index: 99999;
+    	margin-left: -.37rem;
+    	background-image: url('$!{basePath}/content/shaketicket/newshake/img/img-arrow.png');
+    	-webkit-background-size: 100% 100%;
+    	background-size: 100% 100%;
+    	-webkit-animation-name: arrow;
+    	-moz-animation-name: arrow;
+    	-o-animation-name: arrow;
+    	animation-name: arrow!important;
+    	-webkit-animation-duration: 1s;
+    	-moz-animation-duration: 1s;
+    	-o-animation-duration: 1s;
+    	animation-duration: 1s;
+    	-webkit-animation-timing-function: ease-out;
+    	-moz-animation-timing-function: ease-out;
+    	animation-timing-function: ease-out;
+    	-webkit-animation-iteration-count: infinite;
+    	-moz-animation-iteration-count: infinite;
+    	-o-animation-iteration-count: infinite;
+    	animation-iteration-count: infinite
+    }
+	@-webkit-keyframes arrow {
+    	0% {
+    		-webkit-transform: translateY(0);
+    		transform: translateY(0);
+    		opacity: 1
+    	}
+    
+    	100% {
+    		-webkit-transform: translateY(20px);
+    		transform: translateY(20px);
+    		opacity: 0
+    	}
+    }
+
+    @-moz-keyframes arrow {
+    	0% {
+    		-moz-transform: translateY(0);
+    		transform: translateY(0);
+    		opacity: 1
+    	}
+    
+    	100% {
+    		-moz-transform: translateY(20px);
+    		transform: translateY(20px);
+    		opacity: 0
+    	}
+    }
+    
+    @-o-keyframes arrow {
+    	0% {
+    		-o-transform: translateY(0);
+    		transform: translateY(0);
+    		opacity: 1
+    	}
+    
+    	100% {
+    		-o-transform: translateY(20px);
+    		transform: translateY(20px);
+    		opacity: 0
+    	}
+    }
+    
+    @keyframes arrow {
+    	0% {
+    		-webkit-transform: translateY(0);
+    		-moz-transform: translateY(0);
+    		-o-transform: translateY(0);
+    		transform: translateY(0);
+    		opacity: 1
+    	}
+    
+    	100% {
+    		-webkit-transform: translateY(20px);
+    		-moz-transform: translateY(20px);
+    		-o-transform: translateY(20px);
+    		transform: translateY(20px);
+    		opacity: 0
+    	}
+    }
+</style>
+</head>
+<body>
+<input type="hidden" name="actId" id="actId" value="$!{weixinDto.actId}"/>
+<input type="hidden" name="openid" id="openid" value="$!{weixinDto.openid}"/>
+<input type="hidden" name="jwid" id="jwid" value="$!{weixinDto.jwid}"/>
+<input type="hidden" name="appid" id="appid" value="$!{weixinDto.appid}"/>
+<div class="section section1" id="adv1">
+</div>
+<div class="section section2" id="adv2">
+</div>
+<div class="ui-arrow"></div>
+</body>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jquery-1.10.2.min.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jquery-ui-1.10.3.min.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jquery.fullPage.min.js$!{version}" type="text/javascript"></script>
+<script >
+$("#adv2").on("touchstart", function(e) {
+　　　　e.preventDefault();
+　　　　startX = e.originalEvent.changedTouches[0].pageX,
+　　　　startY = e.originalEvent.changedTouches[0].pageY;
+　});
+$("#adv2").on("touchmove", function(e) {
+　　　　e.preventDefault();
+　　　　moveEndX = e.originalEvent.changedTouches[0].pageX,
+　　　　moveEndY = e.originalEvent.changedTouches[0].pageY,
+　　　　X = moveEndX - startX,
+　　　　Y = moveEndY - startY;
+　　　　if(Y<0){
+　　　　　　location.href="$!{basePath}/shaketicket/toIndex.do?actId=$!{weixinDto.actId}&openid=$!{weixinDto.openid}&jwid=$!{weixinDto.jwid}&appid=$!{weixinDto.appid}&adv=toIndex";
+　　　　}
+});
+$(document).ready(function() {
+	jQuery.fn.fullpage({
+		continuousVertical:false,
+		scrollingSpeed:1000,
+		anchors: ['page1', 'page2'],
+		navigationTooltips: [],
+		afterLoad:function(anchorLink, index){
+			$(".ui-arrow").css("top",document.body.clientHeight*0.93+document.body.clientHeight*(index-1)+"px")
+		}
+	});
+});
+</script>
+</html>

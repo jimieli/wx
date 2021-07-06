@@ -1,0 +1,82 @@
+#set($version='?v=0.0.76')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$!{shaketicket.actName}</title>
+<meta charset="UTF-8">
+<meta content="yes" name="apple-mobile-web-app-capable"></meta>
+<meta content="black" name="apple-mobile-web-app-status-bar-style"></meta>
+<meta name="format-detection" content="telephone=no"></meta>
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"></meta>
+<meta content="yes" name="full-screen"></meta>
+<meta content="true" name="x5-fullscreen"></meta>
+<meta content="application" name="browsermode"></meta>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!--图标样式-->
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" rel="stylesheet">
+<!--自定义样式-->	
+<link href="$!{basePath}/content/shaketicket/newshake/css/myprizes.css$!{version}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" name="basePath" id="basePath" value="$!{basePath}"/>
+<input type="hidden" name="jwid" id="jwid" value="$!{weixinDto.jwid}"/>
+<div class="yyybg">
+	<img src="$!{basePath}/content/shaketicket/newshake/img/zjjlbg.png"/>
+	<h3>您的中奖记录</h3>
+</div>
+<div class="cyxx">
+	<p>活动已有<span>$!{joinCount}</span>人参与</p>
+</div>
+<div class="zjxx">
+	<ul>
+		#foreach($record in $recordList)
+			<li>
+				<i><img src="$!record.img" /></i>
+				<p class="nameAndTime">
+					<span>$!record.awardsName</span>
+					<time>$!{Format.date($!record.drawTime,'yyyy-MM-dd hh:mm:ss')}</time>
+				</p>
+				<p class="jp">
+					#if($!record.receiveStatus=="0")
+					<a onclick="javascript:updateRecord('$!record.id','$!record.mobile','$!record.relName','$!record.address','$!record.awardCode');">
+						<span class="lj">领奖</span>
+					</a>
+					#else
+                    <span class="lj" style="background-color: #e8928b;border: 1px solid #e8928b">已领取</span>
+					#end
+				</p>
+			</li>
+		#end
+	</ul>
+</div>
+<!--领奖提示框-->
+<div class="myprizes">
+	<div id="myprizes">
+		<h3>请输入领奖信息</h3>
+		<div class="back">
+			<a href="javascript:hideMyprizes()"><img src="$!{basePath}/content/shaketicket/newshake/img/x.png" /></a>
+        </div>
+        <div class="prize">
+            <div class="input">兑奖码：<span type="text" id="awardCode"></span></div>
+    		<div class="input"><input type="text" id="username" placeholder="请输入姓名" /> </div>
+    		<div class="input"><input type="text" id="tel" placeholder="请输入手机号" /></div>
+    		<div class="input"><input type="text" id="address" placeholder="请输入地址" /></div>
+    		<input name="recordId"  id="recordId" type="hidden">
+		</div>
+		<div class="foot">
+			<button class="close" type="button" onclick="hideMyprizes()">关闭</button>
+			<button class="save" type="button" onclick="updateMyrecord()">保存</button>
+    	</div>
+	</div>
+</div>
+<!--底部通用广告-->
+$!{huodong_bottom_copyright}
+<!--禁用分享-->
+</body>
+<script src="$!{basePath}/content/shaketicket/newshake/js/jquery-1.10.2.min.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/hiddenWxShare.js$!{version}" type="text/javascript"></script>
+<script src="$!{basePath}/content/shaketicket/newshake/js/myprizes.js$!{version}" type="text/javascript"></script>
+</html>

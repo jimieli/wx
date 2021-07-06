@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeecg.p3.scratchcards.dao.WxActScratchcardsPrizesDao">
+
+	<!-- Result Map-->
+	<resultMap id="WxActScratchcardsPrizes" type="com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes" >
+		<result column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="img" property="img" jdbcType="VARCHAR"/>
+		<result column="jwid" property="jwid" jdbcType="VARCHAR"/>
+		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="wherecontation">
+		<trim  suffixOverrides="," >
+				 <if test="query.name != null and query.name != ''" >
+	  		 		/* 奖品名称 */
+			    	AND wasp.name like concat(concat('%',#{query.name}),'%')
+				 </if>
+				 <if test="query.img != null and query.img != ''" >
+	  		 		/* 奖品图片 */
+			    	AND wasp.img =  #{query.img,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.jwid != null and query.jwid != ''" >
+	  		 		/* 微信原始id */
+			    	AND wasp.jwid =  #{query.jwid,jdbcType=VARCHAR}
+				 </if>
+				 <if test="query.createBy != null and query.createBy != ''" >
+	  		 		/* 创建人 */
+			    	AND wasp.create_by =  #{query.createBy,jdbcType=VARCHAR}
+				 </if>
+		</trim>
+	</sql>
+
+	<!--
+	方法名称: insert
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.insert
+	开发信息: 
+	处理信息: 保存信息
+	-->
+	<insert id="insert" parameterType="Object" >
+	  INSERT  INTO  wx_act_scratchcards_prizes   /* 奖品表 */  
+					(	
+                      id                            /*  */ 
+                     ,name                          /* 奖品名称 */ 
+                     ,img                           /* 奖品图片 */ 
+                     ,jwid                          /* 微信原始id */ 
+                     ,create_by                     /* 创建人 */ 
+					)
+			values (
+                      #{id,jdbcType=VARCHAR}                            /*  */ 
+                     ,#{name,jdbcType=VARCHAR}                          /* 奖品名称 */ 
+                     ,#{img,jdbcType=VARCHAR}                           /* 奖品图片 */ 
+                     ,#{jwid,jdbcType=VARCHAR}                          /* 微信原始id */ 
+                     ,#{createBy,jdbcType=VARCHAR}                      /* 创建人 */ 
+					)
+	</insert>
+
+	
+	<!--
+	方法名称: update
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.update
+	开发信息: 
+	处理信息: 修改信息
+	-->  
+	 <update id="update" parameterType="Object" >
+	  UPDATE   wx_act_scratchcards_prizes  	/* 奖品表 */
+	  			<trim   prefix="SET" suffixOverrides="," >
+						 <if test="name != null">
+		    		 		/* 奖品名称 */ 
+	    		 			name = #{name,jdbcType=VARCHAR},
+						 </if>
+						 <if test="img != null">
+		    		 		/* 奖品图片 */ 
+	    		 			img = #{img,jdbcType=VARCHAR},
+						 </if>
+						 <if test="jwid != null">
+		    		 		/* 微信原始id */ 
+	    		 			jwid = #{jwid,jdbcType=VARCHAR},
+						 </if>
+						 <if test="createBy != null">
+		    		 		/* 创建人 */ 
+	    		 			create_by = #{createBy,jdbcType=VARCHAR},
+						 </if>
+	  	  		</trim>
+				WHERE
+	  	 		 		id = #{id}		/* 序号 */ 
+	 </update>
+	
+	<!--
+	方法名称: get
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.get
+	开发信息: 
+	处理信息: 根据主键查询记录
+	-->
+	<select id="get" parameterType="Object"  resultMap="WxActScratchcardsPrizes">
+		   SELECT   
+                   wasp.id                            /*  */ 
+                  ,wasp.name                          /* 奖品名称 */ 
+                  ,wasp.img                           /* 奖品图片 */ 
+                  ,wasp.jwid                          /* 微信原始id */ 
+                  ,wasp.create_by                     /* 创建人 */ 
+		   FROM   wx_act_scratchcards_prizes      AS wasp      /* 奖品表 */ 
+		   WHERE
+				id = #{id}				/* 序号 */ 
+	</select>
+	
+	<!--
+	方法名称: delete
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.delete
+	开发信息: 
+	处理信息: 删除记录
+	-->
+	<delete id="delete" parameterType="Object">
+		DELETE 	FROM wx_act_scratchcards_prizes 	/* 奖品表 */  
+		WHERE 
+			id = #{id}					/* 序号 */ 
+	</delete>
+	
+	<!--
+	方法名称: count
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.count
+	开发信息: 
+	处理信息: 列表总数
+	-->
+	<select id="count" resultType="java.lang.Integer"  parameterType="Object">
+		SELECT count(*)  FROM  wx_act_scratchcards_prizes      AS wasp      /* 奖品表 */ 
+		 WHERE 1=1
+		    <include refid="wherecontation"/>
+	</select>
+  	<select id="queryPrizes" parameterType="Object"  resultMap="WxActScratchcardsPrizes">
+		    SELECT 
+                   wasp.id                            /*  */ 
+                  ,wasp.name                          /* 奖品名称 */ 
+                  ,wasp.img                          /* 奖品图片 */ 
+                  ,wasp.jwid                          /*  */ 
+		FROM   	 wx_act_scratchcards_prizes      AS wasp      /* 配置 */ 
+			WHERE wasp.jwid = #{jwid}
+		<if test="createBy != null and createBy != ''">
+		and wasp.create_by=#{createBy}
+		</if>
+	</select>
+  	<!--
+	方法名称: queryPageList
+	调用路径: com.jeecg.p3.scratchcards.entity.WxActScratchcardsPrizes.queryPageList
+	开发信息: 
+	处理信息: 列表
+	-->
+	<select id="queryPageList" parameterType="Object"  resultMap="WxActScratchcardsPrizes">
+		    SELECT 
+                   wasp.id                            /*  */ 
+                  ,wasp.name                          /* 奖品名称 */ 
+                  ,wasp.img                           /* 奖品图片 */ 
+                  ,wasp.jwid                          /* 微信原始id */ 
+                  ,wasp.create_by                     /* 创建人 */ 
+		FROM   	 wx_act_scratchcards_prizes      AS wasp      /* 奖品表 */ 
+		WHERE 1=1
+		   <include refid="wherecontation"/>
+		LIMIT  #{startRow}  		/* 开始序号 */ 
+			  ,#{pageSize}		/* 每页显示条数 */ 
+	</select>
+	
+	<select id="queryPrizesByName" parameterType="Object"  resultMap="WxActScratchcardsPrizes">
+		    SELECT 
+                   wasp.id                            /*  */ 
+                  ,wasp.name                          /* 奖品名称 */ 
+                  ,wasp.img                           /* 奖品图片 */ 
+                  ,wasp.jwid                          /* 微信原始id */ 
+                  ,wasp.create_by                     /* 创建人 */ 
+		FROM   	wx_act_scratchcards_prizes      AS wasp      /* 奖品表 */   
+		   WHERE
+		    wasp.jwid = #{jwid} 
+		    <if test="createBy != null and createBy != ''" >
+  		 		/* 创建人 */
+		    	AND wasp.create_by =  #{createBy,jdbcType=VARCHAR}
+			 </if>
+		    AND wasp.name = #{name}
+	</select>
+</mapper>

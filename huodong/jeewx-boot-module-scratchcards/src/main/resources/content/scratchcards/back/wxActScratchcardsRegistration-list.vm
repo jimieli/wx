@@ -1,0 +1,125 @@
+#parse("content/base/back/common/macro.vm")
+<!DOCTYPE html>
+<html lang="en">
+#parse("content/base/back/common/head.vm")
+<link href="$!{basePath}/plug-in/plugin/hplus/css/style.css" type="text/css" rel="stylesheet"/>
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<body style='overflow:scroll;overflow-x:hidden'>
+	<div class="container bs-docs-container" style="width:100%;">
+		<div class="row">
+			<form role="form" class="form-inline" action="$!{basePath}/scratchcards/back/wxActScratchcardsRegistration/list.do" method="post"  id="formSubmit">
+				<div  class="col-md-10" style="width:100%">
+								<div class="panel panel-default">
+								  <div class="panel-heading">刮刮乐活动配置列表</div>
+								  <div class="panel-body">
+								  		<div class="search">
+															 <div class="form-group col-sm-3">
+															    <label for="actId" class="control-label col-sm-3 line34">活动id</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="actId" id="actId" value="$!{wxActScratchcardsRegistration.actId}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="openid" class="control-label col-sm-3 line34">活动所属人openid</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="openid" id="openid" value="$!{wxActScratchcardsRegistration.openid}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="nickname" class="control-label col-sm-3 line34">活动所属人昵称</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="nickname" id="nickname" value="$!{wxActScratchcardsRegistration.nickname}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="awardsNum" class="control-label col-sm-3 line34">抽奖次数</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="awardsNum" id="awardsNum" value="$!{wxActScratchcardsRegistration.awardsNum}" class="form-control">
+															  	</div>
+															 </div>
+															<div class="form-group col-sm-3">
+															    <label for="createTime" class="control-label col-sm-3 line34">创建时间</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="createTime" id="createTime" value="$!dateTool.format('yyyy-MM-dd',$!{wxActScratchcardsRegistration.createTime})" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="updateTime" class="control-label col-sm-3 line34">更新时间</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="updateTime" id="updateTime" value="$!{wxActScratchcardsRegistration.updateTime}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="awardsStatus" class="control-label col-sm-3 line34">抽奖状态0:未抽奖;1:已抽奖;</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="awardsStatus" id="awardsStatus" value="$!{wxActScratchcardsRegistration.awardsStatus}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="jwid" class="control-label col-sm-3 line34"></label>
+															     <div class="col-sm-8">
+															    <input type="text" name="jwid" id="jwid" value="$!{wxActScratchcardsRegistration.jwid}" class="form-control">
+															  	</div>
+															 </div>
+															 <div class="form-group col-sm-3">
+															    <label for="remainNumDay" class="control-label col-sm-3 line34">每天的剩余次数</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="remainNumDay" id="remainNumDay" value="$!{wxActScratchcardsRegistration.remainNumDay}" class="form-control">
+															  	</div>
+															 </div>
+											  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>搜  索</button>
+											  <div class="clearfix"></div>
+								  		</div>
+								  		<div id="legend">
+								          <legend  class="le"><button type="button" class="btn btn-primary" onclick="doUrl('$!{basePath}/scratchcards/back/wxActScratchcardsRegistration/toAdd.do')" ><span class="glyphicon glyphicon-plus"></span>新增</button></legend> 
+								        </div>
+								        <table class="table table-striped">
+									        <thead>
+													<th>活动id</th>
+													<th>活动所属人openid</th>
+													<th>活动所属人昵称</th>
+													<th>抽奖次数</th>
+													<th>创建时间</th>
+													<th>更新时间</th>
+													<th>抽奖状态0:未抽奖;1:已抽奖;</th>
+													<th></th>
+													<th>每天的剩余次数</th>
+						                			<th>操作</th>
+									        </thead>
+									        <tobody>
+									    	  #if($!{pageInfos})
+								                #foreach($!{info} in $!{pageInfos})
+									            	<tr>			
+																	<td>$!{info.actId}</td>
+																	<td>$!{info.openid}</td>
+																	<td>$!{info.nickname}</td>
+																	<td>$!{info.awardsNum}</td>
+																	<td>$!dateTool.format("yyyy-MM-dd",$!{info.createTime})</td>
+																	<td>$!{info.updateTime}</td>
+																	<td>$!{info.awardsStatus}</td>
+																	<td>$!{info.jwid}</td>
+																	<td>$!{info.remainNumDay}</td>
+										                <td class="last">
+							                			<a class="btn btn-info btn-xs"  href="javascript:doUrl('$!{basePath}/scratchcards/back/wxActScratchcardsRegistration/toEdit.do?id=$!{info.id}')" ><i class="fa fa-edit"></i> 编辑</a>
+							                			<a class="btn btn-danger btn-xs" href="javascript:delData('$!{basePath}/scratchcards/back/wxActScratchcardsRegistration/doDelete.do?id=$!{info.id}')"><i class="fa fa-trash-o"></i> 删除</a>
+							                			##<a href="javascript:doUrl('$!{basePath}/scratchcards/back/wxActScratchcardsRegistration/toDetail.do?id=$!{info.id}')">详情</a>
+						                				</td>
+									           		</tr>
+									             #end
+									    	 #end
+									         </tobody>
+									    </table>
+										<div class="text-right">
+											<!--公用翻页代码-->
+							                #set($attr='formSubmit')
+							            	#showPageList($pageInfos $attr)
+							                <!--END公用翻页代码-->
+										</div>
+								  </div>	
+								</div>
+				</div>  
+				</form>
+		</div>
+	</div>
+</body>
+</html>

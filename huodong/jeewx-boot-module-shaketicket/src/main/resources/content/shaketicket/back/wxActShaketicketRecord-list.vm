@@ -1,0 +1,217 @@
+#parse("content/base/back/common/macro.vm")
+<!DOCTYPE html>
+<html lang="en">
+#parse("content/base/back/common/head.vm")
+<link href="$!{basePath}/plug-in/plugin/hplus/css/style.css" type="text/css" rel="stylesheet"/>
+<link href="$!{basePath}/plug-in/plugin/hplus/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<body style='overflow:scroll;overflow-x:hidden'>
+	<div class="container bs-docs-container" style="width:100%;">
+		<div class="row">
+			#if($!{rebackFlag}!="1")
+			<form role="form" class="form-inline" action="$!{basePath}/shaketicket/back/wxActShaketicketRecord/list.do?actId=$!{wxActShaketicketRecord.actId}" method="post"  id="formSubmit">
+			#else
+			<form role="form" class="form-inline" action="$!{basePath}/shaketicket/back/wxActShaketicketRecord/list.do?actId=$!{wxActShaketicketRecord.actId}&drawStatus=1&rebackFlag=1" method="post"  id="formSubmit">
+			#end
+			<div  class="col-md-10" style="width:100%">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="34px">
+						<button type="button" class="btn btn-default" id="formReturn" data-dismiss="modal" onclick="doUrl('$!{basePath}/shaketicket/back/wxActShaketicketHome/list.do')"><span class="glyphicon glyphicon-circle-arrow-left"></span> 返回</button>
+						<div style="height:1px;clear:both"></div>
+					</div>
+					<div class="panel-body">
+						<div class="search">				
+							<div class="form-group col-sm-3">
+								<label for="openid" class="control-label col-sm-3 line34">openid</label>
+								<div class="col-sm-8">
+									<input type="text" name="openid" id="openid" value="$!{wxActShaketicketRecord.openid}" class="form-control">
+								</div>
+							</div>
+							<div class="form-group col-sm-3">
+													    <label for="openid" class="control-label col-sm-3 line34">昵称</label>
+													     <div class="col-sm-8">
+													    <input type="text" name="nickname" id="nickname" value="$!{wxActShaketicketRecord.nickname}" class="form-control">
+													  	</div>
+													 </div>
+														#if($!{rebackFlag}=="1")
+															 <div class="form-group col-sm-3">
+															    <label for="openid" class="control-label col-sm-3 line34">奖品名称</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="awardsName" id="awardsName" value="$!{wxActShaketicketRecord.awardsName}" class="form-control">
+															  	</div>
+															 </div>
+															 #end
+															 #if($!{rebackFlag}!="1")
+															 <div class="form-group col-sm-3">
+															    <label for="drawStatus" class="control-label col-sm-3 line34">是否中奖</label>
+															     <div class="col-sm-8">
+															    <select name="drawStatus" id="drawStatus" value="$!{wxActShaketicketRecord.drawStatus}"  class="form-control" > 
+																	<option value="" >请选择</option>
+																	  <option value="0" #if($!wxActShaketicketRecord.drawStatus=='0') selected #end>否</option>
+														      		  <option value="1" #if($!wxActShaketicketRecord.drawStatus=='1') selected #end>是</option>
+														      	 </select>
+															  	</div>
+															 </div>
+															 #end
+															 #if($!{rebackFlag}=="1")
+															 <div class="form-group col-sm-3">
+															    <label for="receiveStatus" class="control-label col-sm-3 line34">领取状态 </label>
+															     <div class="col-sm-8">
+															    <select name="receiveStatus" id="receiveStatus" value="$!{wxActShaketicketRecord.receiveStatus}"  class="form-control" > 
+															          <option value="" >请选择</option>
+														      		  <option value="0" #if($!wxActShaketicketRecord.receiveStatus=='0') selected #end>未领取</option>
+														      		  <option value="1" #if($!wxActShaketicketRecord.receiveStatus=='1') selected #end>已领取</option>
+														      	 </select>
+															  	</div>
+															 </div>
+															  <div class="form-group col-sm-3">
+															    <label for="openid" class="control-label col-sm-3 line34">姓名</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="relName" id="relName" value="$!{wxActShaketicketRecord.relName}" class="form-control">
+															  	</div>
+															 </div>
+															  <div class="form-group col-sm-3">
+															    <label for="openid" class="control-label col-sm-3 line34">手机号</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="mobile" id="mobile" value="$!{wxActShaketicketRecord.mobile}" class="form-control">
+															  	</div>
+															 </div>
+															  <div class="form-group col-sm-3">
+															    <label for="openid" class="control-label col-sm-3 line34">地址</label>
+															     <div class="col-sm-8">
+															    <input type="text" name="address" id="address" value="$!{wxActShaketicketRecord.address}" class="form-control">
+															  	</div>
+															 </div>
+															 #end
+											  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 搜  索</button>
+											  <div class="clearfix"></div>
+								  		</div>
+								  		<div id="legend">
+								  		<legend  class="le">
+											#if($!{rebackFlag}!="1")
+											<a class="btn btn-primary" href="javascript:exportExcel('$!{wxActShaketicketRecord.actId}','')"><span class="glyphicon glyphicon-export"></span> 导出抽奖记录</a>
+											#else
+											<a class="btn btn-primary" href="javascript:exportExcel('$!{wxActShaketicketRecord.actId}','1')"><span class="glyphicon glyphicon-export"></span> 导出中奖记录</a>
+											#end
+										</legend>
+								        </div>
+								        <table class="table table-striped">
+									        <thead>
+													<th>活动名称</th>
+													<th>个人信息</th>
+													#if($!{rebackFlag}=="1")
+													<th>奖品信息</th>
+													<th>领奖信息</th>
+													#end
+													#if($!{rebackFlag}!="1")
+													<th>是否中奖 </th>
+													#end
+													<th>抽奖时间</th>
+													#if($!{rebackFlag}=="1")
+													<th>领取状态 </th>
+													<th>领取时间</th>
+						                			<th>操作</th>
+													#end
+									        </thead>
+									        <tobody>
+									    	  #if($!{pageInfos})
+								                #foreach($!{info} in $!{pageInfos})
+									            	<tr>			
+													<td>$!{info.actName}</td>
+													<td>
+														<table>
+        													<tr>
+                                                                <td>
+        															<img style="width:40px;height:40px" src="$!{info.headimg}" />
+																</td>
+        														<td>
+        															openid：$!{info.openid}<p></p>
+        															昵称：$!{info.nickname}
+        														</td>
+                                                            </tr>
+        												</table>
+													</td>
+													#if($!{rebackFlag}=="1")
+													<td>
+    													#if($!{info.drawStatus}=="1")
+    														<table>
+            													<tr><td><img style="width:40px;height:40px" src="$!{info.img}" /></td>
+            														<td>
+            															$!{info.awardsName}<p></p>
+																		$!{info.awardCode}
+            														</td>
+                                                                </tr>
+            												</table>
+    													#end
+    												</td>
+    												<td>
+    													<table>
+        													<tr>
+        														<td>
+        															$!{info.relName}&nbsp;&nbsp;$!{info.mobile}<p></p>
+    																$!{info.address}
+        														</td>
+                                                                </tr>
+        												</table>
+                                                    </td>
+													#end
+													#if($!{rebackFlag}!="1")
+                                                    <td>#if($!{info.drawStatus}=='1')是#else 否#end</td>
+													#end
+													<td>$!dateTool.format("yyyy-MM-dd HH:mm:ss",$!{info.drawTime})</td>
+													#if($!{rebackFlag}=="1")
+													<td>#if($!{info.receiveStatus}=='0')  <span style="color:#0f0">未领取</span> #else <span style="color:#f00">已领取</span>#end</td>
+														<td>$!dateTool.format("yyyy-MM-dd HH:mm:ss",$!{info.receiveTime})</td>
+										             <td class="last">
+														#if($!{info.drawStatus}=="1")
+															#if($!{info.receiveStatus}=='0')
+															<a class="btn btn-xs btn-success" class="btn btn-success btn-xs" href="javascript:doRecieve('$!{info.id}','1')" style="background-Color:#CD0009;border:none"><i class="fa fa-ticket"></i> 核销</a>
+															#else
+															<a class="btn btn-danger btn-xs"><i class="fa fa-ticket"></i> 已核销</a>
+															#end
+														#end
+						                				</td>
+														#end
+									           		</tr>
+									             #end
+									    	 #end
+									         </tobody>
+									    </table>
+										<div class="text-right">
+											<!--公用翻页代码-->
+							                #set($attr='formSubmit')
+							            	#showPageList($pageInfos $attr)
+							                <!--END公用翻页代码-->
+										</div>
+								  </div>	
+								</div>
+				</div>
+				</form>
+		</div>
+	</div>
+</body>
+<script>
+//导出中奖记录
+function exportExcel(actId,drawStatus){
+	location.href="$!{basePath}/shaketicket/back/wxActShaketicketRecord/exportExcel.do?actId="+actId+"&drawStatus="+drawStatus;
+}
+//奖品核销
+function doRecieve(id,receiveStatus){
+	layer.confirm('确认领取该奖品吗？',function(index){
+		layer.close(index);
+		jQuery.ajax({
+    		type:'post',
+    		url:"$!{basePath}/shaketicket/back/wxActShaketicketRecord/doEdit.do",
+    		dataType:'json',
+    		data:{id:id,receiveStatus:receiveStatus},
+    		success:function(data){
+				layer.alert('领取成功', function(){
+                  location.reload();
+                });  
+    		},
+    		error:function(data){
+			}
+    	});
+    })
+}
+</script>
+</html>
