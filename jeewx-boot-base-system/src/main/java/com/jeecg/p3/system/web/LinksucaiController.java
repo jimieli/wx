@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.jeecg.p3.baseApi.service.BaseApiJwidService;
 import com.jeecg.p3.baseApi.vo.OpenAccountVo;
 import com.jeecg.p3.core.annotation.SkipAuth;
+import com.jeecg.p3.open.service.OpenWxService;
+import com.jeecg.p3.open.web.back.WeixinOpenAccountController;
 import com.jeecg.p3.system.exception.BusinessException;
 import com.jeecg.weibo.util.HttpUtil;
 import org.jeecgframework.p3.core.util.SignatureUtil;
@@ -53,6 +55,9 @@ public class LinksucaiController extends BaseController {
     @Autowired
     private BaseApiJwidService baseApiJwidService;
 
+    @Autowired
+    private OpenWxService openWxService;
+
     /**
      * 链接跳转
      */
@@ -64,6 +69,9 @@ public class LinksucaiController extends BaseController {
             String state = request.getParameter("state");
             //获取公众号缓存信息
             WeixinAccount weixinAccount = JedisPoolUtil.getWxAccount(jwid);
+            if(weixinAccount == null){
+                weixinAccount = openWxService.getWeixinAccountByWeixinOldId(jwid);
+            }
             //类型：1手动授权，2扫码授权（扫描授权的公众号秘钥为空）
             if (oConvertUtils.isEmpty(weixinAccount.getAccountappsecret())) {
                 redirectByAuthType2(request, response, SCOPE);

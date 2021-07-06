@@ -55,5 +55,11 @@
 			<groupId>org.jeewxframework.boot</groupId>
 			<artifactId>jeewx-boot-base-api</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.jeewxframework.boot</groupId>
+            <artifactId>jeewx-boot-module-weixin</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
